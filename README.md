@@ -5,7 +5,7 @@ Project scaffold for a MongoDB / Express / React / Node e-commerce site.
 ## Structure
 
 - `backend/` — Express + Mongoose API, connects to MongoDB Atlas via `MONGO_URI` in `.env` (see `backend/.env.example`).
-- `frontend/` — React app scaffolded with Vite, styled with Tailwind CSS.
+- `frontend/` — React app with Vite, styled with Tailwind CSS.
 
 ## Status
 
