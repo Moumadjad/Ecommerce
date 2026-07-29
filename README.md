@@ -9,11 +9,12 @@ Project scaffold for a MongoDB / Express / React / Node e-commerce site.
 
 ## Status
 
-Both projects are initialized (dependencies installed, dev servers runnable) but no e-commerce features are implemented yet. This README tracks the planned feature roadmap.
+- **User authentication** — done. JWT register/login/me on the backend; login/register pages, an `AuthContext`, and protected routes on the frontend.
+- Other features below are not implemented yet.
 
 ## Planned features
 
-- **User authentication** — registration/login with JWT, password hashing (bcrypt), protected routes, roles (customer/admin).
+- ~~**User authentication** — registration/login with JWT, password hashing (bcrypt), protected routes, roles (customer/admin).~~ done
 - **Product catalog** — product model (name, description, price, images, category, stock), public listing/detail pages, admin CRUD.
 - **Cart & checkout** — client-side/server-synced cart, order creation, order history.
 - **Payments** — Stripe integration (test mode) for checkout.
@@ -33,5 +34,6 @@ npm run dev
 
 ```bash
 cd frontend
+cp .env.example .env   # points VITE_API_URL at the backend (defaults to http://localhost:5000/api)
 npm run dev
 ```
