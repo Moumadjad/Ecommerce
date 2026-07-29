@@ -3,6 +3,10 @@ export function notFound(req, res) {
 }
 
 export function errorHandler(err, req, res, next) {
+  if (err.name === "CastError") {
+    return res.status(404).json({ message: "Resource not found" });
+  }
+
   const status = res.statusCode !== 200 ? res.statusCode : 500;
   res.status(status).json({
     message: err.message || "Server error",
