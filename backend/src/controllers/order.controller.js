@@ -74,6 +74,30 @@ export const getOrderById = asyncHandler(async function getOrderById(req, res) {
   res.json({ order });
 });
 
+export const payOrder = asyncHandler(async function payOrder(req, res) {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return res.status(404).json({ message: "Order not found" });
+  }
+
+  const isOwner = order.user.toString() === req.user._id.toString();
+  if (!isOwner && req.user.role !== "admin") {
+    return res.status(403).json({ message: "Not authorized to pay for this order" });
+  }
+
+  if (order.status !== "pending") {
+    return res.status(400).json({ message: `Order cannot be paid because it is already ${order.status}` });
+  }
+
+  // Simulated payment: no real payment gateway, confirming always succeeds.
+  order.status = "paid";
+  order.paidAt = new Date();
+  await order.save();
+
+  res.json({ order });
+});
+
 export const updateOrderStatus = asyncHandler(async function updateOrderStatus(req, res) {
   const { status } = req.body;
   const validStatuses = ["pending", "paid", "shipped", "delivered", "cancelled"];
