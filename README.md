@@ -10,18 +10,18 @@ Project scaffold for a MongoDB / Express / React / Node e-commerce site.
 ## Status
 
 - **User authentication** — done. JWT register/login/me on the backend; login/register pages, an `AuthContext`, and protected routes on the frontend.
-- **Product catalog** — backend done (model, public list/detail with pagination/filter/search, admin-only CRUD). Frontend pages not built yet.
-- **Cart & checkout** — backend done. Cart is client-side only (no server cart model); `Order` is created at checkout with server-side price/stock validation. Frontend not built yet.
-- **Payments** — backend done, but simulated: no Stripe/real gateway. `POST /api/orders/:id/pay` marks a pending order as paid immediately. Frontend not built yet.
-- Other features below are not implemented yet.
+- **Product catalog** — done. Backend model + public list/detail (pagination/filter/search) + admin-only CRUD; frontend listing and detail pages with add-to-cart.
+- **Cart & checkout** — done. Client-side cart (localStorage); checkout form creates an `Order` with server-side price/stock validation.
+- **Payments** — done, but simulated: no Stripe/real gateway. Clicking "Pay now" → "Confirm payment" calls `POST /api/orders/:id/pay`, which always marks the order paid instantly.
+- **Admin dashboard** — backend done (`GET /api/admin/stats`: revenue, order counts by status, low-stock products, recent orders — plus the existing product CRUD and order listing/status routes). Frontend not built yet.
 
 ## Planned features
 
 - ~~**User authentication** — registration/login with JWT, password hashing (bcrypt), protected routes, roles (customer/admin).~~ done
-- ~~**Product catalog** — product model (name, description, price, images, category, stock), public listing/detail pages, admin CRUD.~~ backend done, frontend pending
-- ~~**Cart & checkout** — client-side/server-synced cart, order creation, order history.~~ backend done, frontend pending
-- ~~**Payments** — Stripe integration (test mode) for checkout.~~ replaced with a simulated instant-success payment (no real gateway), backend done, frontend pending
-- **Admin dashboard** — manage products, view orders, basic sales overview.
+- ~~**Product catalog** — product model (name, description, price, images, category, stock), public listing/detail pages, admin CRUD.~~ done
+- ~~**Cart & checkout** — client-side/server-synced cart, order creation, order history.~~ done
+- ~~**Payments** — Stripe integration (test mode) for checkout.~~ replaced with a simulated instant-success payment (no real gateway), done
+- ~~**Admin dashboard** — manage products, view orders, basic sales overview.~~ backend done, frontend pending
 
 ## Getting started
 
