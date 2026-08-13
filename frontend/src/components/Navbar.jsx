@@ -32,6 +32,11 @@ export default function Navbar() {
               <Link to="/orders" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                 My orders
               </Link>
+              {user.role === "admin" && (
+                <Link to="/admin" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                  Admin
+                </Link>
+              )}
               <span className="text-gray-400 dark:text-gray-500">{user.name}</span>
               <button
                 type="button"

@@ -19,8 +19,9 @@ export default function Login() {
     setError("");
     setSubmitting(true);
     try {
-      await login(form.email, form.password);
-      navigate(searchParams.get("redirect") || "/");
+      const user = await login(form.email, form.password);
+      const redirect = searchParams.get("redirect");
+      navigate(redirect || (user.role === "admin" ? "/admin" : "/"));
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     } finally {

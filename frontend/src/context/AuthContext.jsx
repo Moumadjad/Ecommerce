@@ -25,12 +25,14 @@ export function AuthProvider({ children }) {
     const { data } = await api.post("/auth/register", { name, email, password });
     localStorage.setItem("token", data.token);
     setUser(data.user);
+    return data.user;
   }
 
   async function login(email, password) {
     const { data } = await api.post("/auth/login", { email, password });
     localStorage.setItem("token", data.token);
     setUser(data.user);
+    return data.user;
   }
 
   function logout() {

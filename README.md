@@ -13,7 +13,9 @@ Project scaffold for a MongoDB / Express / React / Node e-commerce site.
 - **Product catalog** — done. Backend model + public list/detail (pagination/filter/search) + admin-only CRUD; frontend listing and detail pages with add-to-cart.
 - **Cart & checkout** — done. Client-side cart (localStorage); checkout form creates an `Order` with server-side price/stock validation.
 - **Payments** — done, but simulated: no Stripe/real gateway. Clicking "Pay now" → "Confirm payment" calls `POST /api/orders/:id/pay`, which always marks the order paid instantly.
-- **Admin dashboard** — backend done (`GET /api/admin/stats`: revenue, order counts by status, low-stock products, recent orders — plus the existing product CRUD and order listing/status routes). Frontend not built yet.
+- **Admin dashboard** — done. `/admin` (dashboard stats), `/admin/products` (list/create/edit/delete), `/admin/orders` (list + status updates), all gated by an `AdminRoute` that checks `role === "admin"`.
+
+All planned features are implemented. Every roadmap item below is done.
 
 ## Planned features
 
@@ -21,7 +23,7 @@ Project scaffold for a MongoDB / Express / React / Node e-commerce site.
 - ~~**Product catalog** — product model (name, description, price, images, category, stock), public listing/detail pages, admin CRUD.~~ done
 - ~~**Cart & checkout** — client-side/server-synced cart, order creation, order history.~~ done
 - ~~**Payments** — Stripe integration (test mode) for checkout.~~ replaced with a simulated instant-success payment (no real gateway), done
-- ~~**Admin dashboard** — manage products, view orders, basic sales overview.~~ backend done, frontend pending
+- ~~**Admin dashboard** — manage products, view orders, basic sales overview.~~ done
 
 ## Getting started
 
