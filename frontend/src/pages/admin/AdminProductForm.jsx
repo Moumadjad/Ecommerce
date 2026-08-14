@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../api/client";
+import { btn, card, input, label as labelClass } from "../../lib/ui";
 
 const EMPTY_FORM = {
   name: "",
@@ -79,104 +80,98 @@ export default function AdminProductForm() {
   if (loading) return <p className="text-gray-500 dark:text-gray-400">Loading...</p>;
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-lg space-y-4">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+    <div>
+      <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white mb-6">
         {isEditing ? "Edit product" : "New product"}
-      </h2>
+      </h1>
 
-      {error && (
-        <p className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded px-3 py-2">{error}</p>
-      )}
+      <form onSubmit={handleSubmit} className={card("max-w-lg p-6 space-y-4")}>
+        {error && (
+          <p className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded-lg px-3 py-2">
+            {error}
+          </p>
+        )}
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
-        <input
-          type="text"
-          name="name"
-          required
-          value={form.name}
-          onChange={handleChange}
-          className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Description
-        </label>
-        <textarea
-          name="description"
-          required
-          rows={3}
-          value={form.description}
-          onChange={handleChange}
-          className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Price ($)
-          </label>
+          <label className={labelClass()}>Name</label>
           <input
-            type="number"
-            name="price"
+            type="text"
+            name="name"
             required
-            min="0"
-            step="0.01"
-            value={form.price}
+            value={form.name}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100"
+            className={input("mt-1")}
           />
         </div>
+
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Stock</label>
-          <input
-            type="number"
-            name="stock"
+          <label className={labelClass()}>Description</label>
+          <textarea
+            name="description"
             required
-            min="0"
-            value={form.stock}
+            rows={3}
+            value={form.description}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100"
+            className={input("mt-1")}
           />
         </div>
-      </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
-        <input
-          type="text"
-          name="category"
-          required
-          value={form.category}
-          onChange={handleChange}
-          className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100"
-        />
-      </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className={labelClass()}>Price ($)</label>
+            <input
+              type="number"
+              name="price"
+              required
+              min="0"
+              step="0.01"
+              value={form.price}
+              onChange={handleChange}
+              className={input("mt-1")}
+            />
+          </div>
+          <div>
+            <label className={labelClass()}>Stock</label>
+            <input
+              type="number"
+              name="stock"
+              required
+              min="0"
+              value={form.stock}
+              onChange={handleChange}
+              className={input("mt-1")}
+            />
+          </div>
+        </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Image URLs (comma-separated)
-        </label>
-        <input
-          type="text"
-          name="images"
-          value={form.images}
-          onChange={handleChange}
-          placeholder="https://example.com/image.jpg"
-          className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100"
-        />
-      </div>
+        <div>
+          <label className={labelClass()}>Category</label>
+          <input
+            type="text"
+            name="category"
+            required
+            value={form.category}
+            onChange={handleChange}
+            className={input("mt-1")}
+          />
+        </div>
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="rounded-md bg-indigo-600 text-white px-5 py-2.5 font-medium hover:bg-indigo-700 disabled:opacity-50"
-      >
-        {submitting ? "Saving..." : isEditing ? "Save changes" : "Create product"}
-      </button>
-    </form>
+        <div>
+          <label className={labelClass()}>Image URLs (comma-separated)</label>
+          <input
+            type="text"
+            name="images"
+            value={form.images}
+            onChange={handleChange}
+            placeholder="https://example.com/image.jpg"
+            className={input("mt-1")}
+          />
+        </div>
+
+        <button type="submit" disabled={submitting} className={btn("primary")}>
+          {submitting ? "Saving..." : isEditing ? "Save changes" : "Create product"}
+        </button>
+      </form>
+    </div>
   );
 }

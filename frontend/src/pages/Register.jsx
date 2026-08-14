@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { btn, card, input, label as labelClass, link } from "../lib/ui";
 
 export default function Register() {
   const { register } = useAuth();
@@ -28,53 +29,44 @@ export default function Register() {
   }
 
   return (
-    <div className="flex justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm bg-white dark:bg-gray-800 rounded-lg shadow p-6 space-y-4"
-      >
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+    <div className="flex justify-center py-6">
+      <form onSubmit={handleSubmit} className={card("w-full max-w-sm p-7 space-y-5")}>
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
           Create an account
         </h1>
 
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded px-3 py-2">
+          <p className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded-lg px-3 py-2">
             {error}
           </p>
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Name
-          </label>
+          <label className={labelClass()}>Name</label>
           <input
             type="text"
             name="name"
             required
             value={form.name}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-gray-900 dark:text-gray-100"
+            className={input("mt-1")}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Email
-          </label>
+          <label className={labelClass()}>Email</label>
           <input
             type="email"
             name="email"
             required
             value={form.email}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-gray-900 dark:text-gray-100"
+            className={input("mt-1")}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Password
-          </label>
+          <label className={labelClass()}>Password</label>
           <input
             type="password"
             name="password"
@@ -82,21 +74,17 @@ export default function Register() {
             minLength={6}
             value={form.password}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-gray-900 dark:text-gray-100"
+            className={input("mt-1")}
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full rounded-md bg-indigo-600 text-white py-2 font-medium hover:bg-indigo-700 disabled:opacity-50"
-        >
+        <button type="submit" disabled={submitting} className={btn("primary", "lg", "w-full")}>
           {submitting ? "Creating account..." : "Register"}
         </button>
 
         <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
           Already have an account?{" "}
-          <Link to="/login" className="text-indigo-600 hover:underline">
+          <Link to="/login" className={link()}>
             Log in
           </Link>
         </p>

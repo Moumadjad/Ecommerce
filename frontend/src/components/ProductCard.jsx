@@ -1,29 +1,34 @@
 import { Link } from "react-router-dom";
+import { card } from "../lib/ui";
 
 export default function ProductCard({ product }) {
   return (
     <Link
       to={`/products/${product._id}`}
-      className="block rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow"
+      className={card("group overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all")}
     >
-      <div className="aspect-square bg-gray-100 dark:bg-gray-800">
+      <div className="aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden">
         {product.images?.[0] && (
           <img
             src={product.images[0]}
             alt={product.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         )}
       </div>
-      <div className="p-3">
-        <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{product.category}</p>
-        <h3 className="font-medium text-gray-900 dark:text-gray-100">{product.name}</h3>
-        <p className="mt-1 font-semibold text-gray-900 dark:text-gray-100">
-          ${product.price.toFixed(2)}
+      <div className="p-4">
+        <p className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide">
+          {product.category}
         </p>
-        {product.stock === 0 && (
-          <p className="text-sm text-red-600 mt-1">Out of stock</p>
-        )}
+        <h3 className="mt-1 font-medium text-gray-900 dark:text-gray-100">{product.name}</h3>
+        <div className="mt-2 flex items-center justify-between">
+          <p className="font-semibold text-gray-900 dark:text-gray-100">
+            ${product.price.toFixed(2)}
+          </p>
+          {product.stock === 0 && (
+            <span className="text-xs font-medium text-red-600 dark:text-red-400">Out of stock</span>
+          )}
+        </div>
       </div>
     </Link>
   );

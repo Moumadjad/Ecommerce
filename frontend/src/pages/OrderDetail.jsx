@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api/client";
 import OrderStatusBadge from "../components/OrderStatusBadge";
+import { btn, card, link } from "../lib/ui";
 
 export default function OrderDetail() {
   const { id } = useParams();
@@ -36,7 +37,7 @@ export default function OrderDetail() {
     return (
       <div>
         <p className="text-red-600">{error}</p>
-        <Link to="/orders" className="text-indigo-600 hover:underline">
+        <Link to="/orders" className={link()}>
           Back to my orders
         </Link>
       </div>
@@ -49,16 +50,16 @@ export default function OrderDetail() {
 
   return (
     <div className="max-w-xl">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
           Order #{order._id.slice(-6)}
         </h1>
         <OrderStatusBadge status={order.status} />
       </div>
 
-      <div className="divide-y divide-gray-200 dark:divide-gray-700 border-y border-gray-200 dark:border-gray-700">
+      <div className={card("divide-y divide-gray-200 dark:divide-gray-800 px-5")}>
         {order.items.map((item) => (
-          <div key={item.product} className="flex justify-between py-2 text-sm">
+          <div key={item.product} className="flex justify-between py-2.5 text-sm">
             <span className="text-gray-700 dark:text-gray-300">
               {item.name} x {item.quantity}
             </span>
@@ -69,13 +70,13 @@ export default function OrderDetail() {
         ))}
       </div>
 
-      <p className="mt-3 font-semibold text-gray-900 dark:text-gray-100">
+      <p className="mt-4 font-semibold text-gray-900 dark:text-white">
         Total: ${order.totalPrice.toFixed(2)}
       </p>
 
       {order.shippingAddress?.address && (
-        <div className="mt-4 text-sm text-gray-600 dark:text-gray-300">
-          <p className="font-medium text-gray-900 dark:text-gray-100">Shipping to</p>
+        <div className="mt-5 text-sm text-gray-600 dark:text-gray-300">
+          <p className="font-medium text-gray-900 dark:text-white">Shipping to</p>
           <p>{order.shippingAddress.address}</p>
           <p>
             {order.shippingAddress.city}, {order.shippingAddress.postalCode}
@@ -85,43 +86,34 @@ export default function OrderDetail() {
       )}
 
       {payError && (
-        <p className="mt-4 text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded px-3 py-2">
+        <p className="mt-4 text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded-lg px-3 py-2">
           {payError}
         </p>
       )}
 
       {order.status === "pending" && !confirming && (
-        <button
-          type="button"
-          onClick={() => setConfirming(true)}
-          className="mt-6 rounded-md bg-indigo-600 text-white px-5 py-2.5 font-medium hover:bg-indigo-700"
-        >
+        <button type="button" onClick={() => setConfirming(true)} className={btn("primary", "lg", "mt-6")}>
           Pay now
         </button>
       )}
 
       {order.status === "pending" && confirming && (
-        <div className="mt-6 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+        <div className={card("mt-6 p-4")}>
           <p className="text-gray-900 dark:text-gray-100">
             Confirm payment of <span className="font-semibold">${order.totalPrice.toFixed(2)}</span>?
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             Simulated payment — no card details required, this always succeeds.
           </p>
-          <div className="mt-3 flex gap-3">
-            <button
-              type="button"
-              onClick={handlePay}
-              disabled={paying}
-              className="rounded-md bg-indigo-600 text-white px-4 py-2 font-medium hover:bg-indigo-700 disabled:opacity-50"
-            >
+          <div className="mt-4 flex gap-3">
+            <button type="button" onClick={handlePay} disabled={paying} className={btn("primary")}>
               {paying ? "Processing..." : "Confirm payment"}
             </button>
             <button
               type="button"
               onClick={() => setConfirming(false)}
               disabled={paying}
-              className="rounded-md border border-gray-300 dark:border-gray-600 px-4 py-2 text-gray-700 dark:text-gray-200"
+              className={btn("secondary")}
             >
               Cancel
             </button>
@@ -130,7 +122,7 @@ export default function OrderDetail() {
       )}
 
       {order.status === "paid" && (
-        <p className="mt-6 text-sm text-green-600">
+        <p className="mt-6 text-sm text-green-600 dark:text-green-400">
           Payment confirmed{order.paidAt ? ` on ${new Date(order.paidAt).toLocaleString()}` : ""}.
         </p>
       )}

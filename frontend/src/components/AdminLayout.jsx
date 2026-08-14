@@ -17,25 +17,25 @@ export default function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen flex bg-white dark:bg-gray-900">
-      <aside className="w-56 shrink-0 border-r border-gray-200 dark:border-gray-800 flex flex-col">
-        <div className="h-14 flex items-center px-4 border-b border-gray-200 dark:border-gray-800">
-          <Link to="/admin" className="font-semibold text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen flex bg-gray-50 dark:bg-gray-950">
+      <aside className="w-60 shrink-0 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex flex-col">
+        <div className="h-16 flex items-center px-5 border-b border-gray-200 dark:border-gray-800">
+          <Link to="/admin" className="font-semibold text-lg tracking-tight text-gray-900 dark:text-white">
             Admin
           </Link>
         </div>
 
-        <nav className="flex-1 px-2 py-4 space-y-1">
+        <nav className="flex-1 px-3 py-4 space-y-0.5">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               end={item.end}
               className={({ isActive }) =>
-                `block rounded-md px-3 py-2 text-sm font-medium ${
+                `block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-300"
-                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300"
+                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
                 }`
               }
             >
@@ -44,25 +44,30 @@ export default function AdminLayout() {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-gray-200 dark:border-gray-800 space-y-2">
-          <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{user.name}</p>
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800 space-y-3">
+          <div className="flex items-center gap-2.5 px-1">
+            <div className="h-8 w-8 rounded-full bg-indigo-600 text-white text-sm font-semibold flex items-center justify-center shrink-0">
+              {user.name.charAt(0).toUpperCase()}
+            </div>
+            <p className="text-sm text-gray-700 dark:text-gray-300 truncate">{user.name}</p>
+          </div>
           <Link
             to="/"
-            className="block text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+            className="block text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             Back to store
           </Link>
           <button
             type="button"
             onClick={handleLogout}
-            className="block w-full text-left text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+            className="block w-full text-left text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             Log out
           </button>
         </div>
       </aside>
 
-      <main className="flex-1 px-8 py-8">
+      <main className="flex-1 px-10 py-10">
         <Outlet />
       </main>
     </div>

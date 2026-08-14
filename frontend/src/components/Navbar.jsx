@@ -1,6 +1,14 @@
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import { btn } from "../lib/ui";
+
+const navLinkClass = ({ isActive }) =>
+  `text-sm font-medium transition-colors ${
+    isActive
+      ? "text-gray-900 dark:text-white"
+      : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+  }`;
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -13,47 +21,51 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-      <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link to="/" className="font-semibold text-gray-900 dark:text-gray-100">
+    <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
+      <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+        <NavLink to="/" className="font-semibold text-lg tracking-tight text-gray-900 dark:text-white">
           E-Commerce
-        </Link>
+        </NavLink>
 
-        <div className="flex items-center gap-4 text-sm">
-          <Link to="/" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+        <div className="flex items-center gap-6">
+          <NavLink to="/" end className={navLinkClass}>
             Products
-          </Link>
-          <Link to="/cart" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-            Cart{totalItems > 0 ? ` (${totalItems})` : ""}
-          </Link>
+          </NavLink>
+          <NavLink to="/cart" className={navLinkClass}>
+            <span className="inline-flex items-center gap-1.5">
+              Cart
+              {totalItems > 0 && (
+                <span className="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 rounded-full bg-indigo-600 text-white text-xs font-semibold">
+                  {totalItems}
+                </span>
+              )}
+            </span>
+          </NavLink>
 
           {user ? (
             <>
-              <Link to="/orders" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+              <NavLink to="/orders" className={navLinkClass}>
                 My orders
-              </Link>
+              </NavLink>
               {user.role === "admin" && (
-                <Link to="/admin" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                <NavLink to="/admin" className={navLinkClass}>
                   Admin
-                </Link>
+                </NavLink>
               )}
-              <span className="text-gray-400 dark:text-gray-500">{user.name}</span>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-              >
+              <div className="h-5 w-px bg-gray-200 dark:bg-gray-800" />
+              <span className="text-sm text-gray-500 dark:text-gray-400">{user.name}</span>
+              <button type="button" onClick={handleLogout} className={btn("secondary", "sm")}>
                 Log out
               </button>
             </>
           ) : (
             <>
-              <Link to="/login" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+              <NavLink to="/login" className={navLinkClass}>
                 Log in
-              </Link>
-              <Link to="/register" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+              </NavLink>
+              <NavLink to="/register" className={btn("primary", "sm")}>
                 Register
-              </Link>
+              </NavLink>
             </>
           )}
         </div>

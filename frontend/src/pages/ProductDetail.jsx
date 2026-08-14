@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/client";
 import { useCart } from "../context/CartContext";
+import { btn, input, link } from "../lib/ui";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -30,7 +31,7 @@ export default function ProductDetail() {
     return (
       <div>
         <p className="text-red-600">{error}</p>
-        <Link to="/" className="text-indigo-600 hover:underline">
+        <Link to="/" className={link()}>
           Back to products
         </Link>
       </div>
@@ -42,53 +43,55 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="grid sm:grid-cols-2 gap-8">
-      <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+    <div className="grid sm:grid-cols-2 gap-10">
+      <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden">
         {product.images?.[0] && (
           <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
         )}
       </div>
 
       <div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{product.category}</p>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{product.name}</h1>
-        <p className="mt-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <p className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide">
+          {product.category}
+        </p>
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          {product.name}
+        </h1>
+        <p className="mt-3 text-2xl font-semibold text-gray-900 dark:text-white">
           ${product.price.toFixed(2)}
         </p>
-        <p className="mt-4 text-gray-600 dark:text-gray-300">{product.description}</p>
+        <p className="mt-4 text-gray-600 dark:text-gray-300 leading-relaxed">{product.description}</p>
 
         {product.stock > 0 ? (
           <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{product.stock} in stock</p>
         ) : (
-          <p className="mt-4 text-sm text-red-600">Out of stock</p>
+          <p className="mt-4 text-sm font-medium text-red-600 dark:text-red-400">Out of stock</p>
         )}
 
         {product.stock > 0 && (
-          <div className="mt-4 flex items-center gap-3">
-            <input
-              type="number"
-              min={1}
-              max={product.stock}
-              value={quantity}
-              onChange={(e) =>
-                setQuantity(Math.max(1, Math.min(product.stock, Number(e.target.value) || 1)))
-              }
-              className="w-20 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100"
-            />
-            <button
-              type="button"
-              onClick={handleAddToCart}
-              className="rounded-md bg-indigo-600 text-white px-4 py-2 font-medium hover:bg-indigo-700"
-            >
+          <div className="mt-6 flex items-center gap-3">
+            <div className="w-20 shrink-0">
+              <input
+                type="number"
+                min={1}
+                max={product.stock}
+                value={quantity}
+                onChange={(e) =>
+                  setQuantity(Math.max(1, Math.min(product.stock, Number(e.target.value) || 1)))
+                }
+                className={input()}
+              />
+            </div>
+            <button type="button" onClick={handleAddToCart} className={btn("primary", "lg", "shrink-0")}>
               Add to cart
             </button>
           </div>
         )}
 
         {added && (
-          <p className="mt-3 text-sm text-green-600">
+          <p className="mt-4 text-sm text-green-600 dark:text-green-400">
             Added to cart.{" "}
-            <button type="button" onClick={() => navigate("/cart")} className="underline">
+            <button type="button" onClick={() => navigate("/cart")} className="underline underline-offset-2">
               View cart
             </button>
           </p>

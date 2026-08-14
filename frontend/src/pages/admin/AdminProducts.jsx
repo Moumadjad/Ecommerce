@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../api/client";
+import { btn, card } from "../../lib/ui";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -35,12 +36,11 @@ export default function AdminProducts() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Products</h2>
-        <Link
-          to="/admin/products/new"
-          className="rounded-md bg-indigo-600 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700"
-        >
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          Products
+        </h1>
+        <Link to="/admin/products/new" className={btn("primary")}>
           New product
         </Link>
       </div>
@@ -49,39 +49,39 @@ export default function AdminProducts() {
       {loading && <p className="text-gray-500 dark:text-gray-400">Loading...</p>}
 
       {!loading && (
-        <div className="overflow-x-auto">
+        <div className={card("overflow-x-auto")}>
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                <th className="py-2 pr-4">Name</th>
-                <th className="py-2 pr-4">Category</th>
-                <th className="py-2 pr-4">Price</th>
-                <th className="py-2 pr-4">Stock</th>
-                <th className="py-2 pr-4"></th>
+              <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-800">
+                <th className="py-3 pl-5 pr-4 font-medium">Name</th>
+                <th className="py-3 pr-4 font-medium">Category</th>
+                <th className="py-3 pr-4 font-medium">Price</th>
+                <th className="py-3 pr-4 font-medium">Stock</th>
+                <th className="py-3 pr-5"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
               {products.map((product) => (
-                <tr key={product._id}>
-                  <td className="py-2 pr-4 text-gray-900 dark:text-gray-100">{product.name}</td>
-                  <td className="py-2 pr-4 text-gray-600 dark:text-gray-300 capitalize">
+                <tr key={product._id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                  <td className="py-3 pl-5 pr-4 text-gray-900 dark:text-gray-100">{product.name}</td>
+                  <td className="py-3 pr-4 text-gray-600 dark:text-gray-300 capitalize">
                     {product.category}
                   </td>
-                  <td className="py-2 pr-4 text-gray-600 dark:text-gray-300">
+                  <td className="py-3 pr-4 text-gray-600 dark:text-gray-300">
                     ${product.price.toFixed(2)}
                   </td>
-                  <td className="py-2 pr-4 text-gray-600 dark:text-gray-300">{product.stock}</td>
-                  <td className="py-2 pr-4 text-right space-x-3">
+                  <td className="py-3 pr-4 text-gray-600 dark:text-gray-300">{product.stock}</td>
+                  <td className="py-3 pr-5 text-right space-x-4">
                     <Link
                       to={`/admin/products/${product._id}/edit`}
-                      className="text-indigo-600 hover:underline"
+                      className="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium transition-colors"
                     >
                       Edit
                     </Link>
                     <button
                       type="button"
                       onClick={() => handleDelete(product)}
-                      className="text-red-600 hover:underline"
+                      className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium transition-colors"
                     >
                       Delete
                     </button>
@@ -99,7 +99,7 @@ export default function AdminProducts() {
             type="button"
             disabled={page <= 1}
             onClick={() => setPage((p) => p - 1)}
-            className="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-gray-700 dark:text-gray-200 disabled:opacity-40"
+            className={btn("secondary", "sm", "disabled:opacity-40")}
           >
             Previous
           </button>
@@ -110,7 +110,7 @@ export default function AdminProducts() {
             type="button"
             disabled={page >= pages}
             onClick={() => setPage((p) => p + 1)}
-            className="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-gray-700 dark:text-gray-200 disabled:opacity-40"
+            className={btn("secondary", "sm", "disabled:opacity-40")}
           >
             Next
           </button>

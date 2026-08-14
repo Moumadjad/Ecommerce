@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { btn, card, input, label as labelClass, link } from "../lib/ui";
 
 export default function Login() {
   const { login } = useAuth();
@@ -30,60 +31,49 @@ export default function Login() {
   }
 
   return (
-    <div className="flex justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm bg-white dark:bg-gray-800 rounded-lg shadow p-6 space-y-4"
-      >
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+    <div className="flex justify-center py-6">
+      <form onSubmit={handleSubmit} className={card("w-full max-w-sm p-7 space-y-5")}>
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
           Log in
         </h1>
 
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded px-3 py-2">
+          <p className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded-lg px-3 py-2">
             {error}
           </p>
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Email
-          </label>
+          <label className={labelClass()}>Email</label>
           <input
             type="email"
             name="email"
             required
             value={form.email}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-gray-900 dark:text-gray-100"
+            className={input("mt-1")}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Password
-          </label>
+          <label className={labelClass()}>Password</label>
           <input
             type="password"
             name="password"
             required
             value={form.password}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-gray-900 dark:text-gray-100"
+            className={input("mt-1")}
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full rounded-md bg-indigo-600 text-white py-2 font-medium hover:bg-indigo-700 disabled:opacity-50"
-        >
+        <button type="submit" disabled={submitting} className={btn("primary", "lg", "w-full")}>
           {submitting ? "Logging in..." : "Log in"}
         </button>
 
         <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
           Don't have an account?{" "}
-          <Link to="/register" className="text-indigo-600 hover:underline">
+          <Link to="/register" className={link()}>
             Register
           </Link>
         </p>

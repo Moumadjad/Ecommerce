@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import ProductCard from "../components/ProductCard";
+import { btn, input } from "../lib/ui";
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
@@ -37,13 +38,17 @@ export default function ProductList() {
 
   return (
     <div>
-      <form onSubmit={handleSearchSubmit} className="flex flex-wrap gap-3 mb-6">
-        <input
-          type="text"
-          name="search"
-          placeholder="Search products..."
-          className="flex-1 min-w-[200px] rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100"
-        />
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          Products
+        </h1>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          Browse the full catalog.
+        </p>
+      </div>
+
+      <form onSubmit={handleSearchSubmit} className="flex flex-wrap gap-3 mb-8">
+        <input type="text" name="search" placeholder="Search products..." className={input("flex-1 min-w-[200px]")} />
         <input
           type="text"
           value={category}
@@ -52,12 +57,9 @@ export default function ProductList() {
             setCategory(e.target.value);
           }}
           placeholder="Filter by category..."
-          className="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100"
+          className={input("sm:w-56")}
         />
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 text-white px-4 py-2 font-medium hover:bg-indigo-700"
-        >
+        <button type="submit" className={btn("primary")}>
           Search
         </button>
       </form>
@@ -69,19 +71,19 @@ export default function ProductList() {
         <p className="text-gray-500 dark:text-gray-400">No products found.</p>
       )}
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
         {products.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}
       </div>
 
       {pages > 1 && (
-        <div className="flex items-center justify-center gap-4 mt-8">
+        <div className="flex items-center justify-center gap-4 mt-10">
           <button
             type="button"
             disabled={page <= 1}
             onClick={() => setPage((p) => p - 1)}
-            className="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-gray-700 dark:text-gray-200 disabled:opacity-40"
+            className={btn("secondary", "sm", "disabled:opacity-40")}
           >
             Previous
           </button>
@@ -92,7 +94,7 @@ export default function ProductList() {
             type="button"
             disabled={page >= pages}
             onClick={() => setPage((p) => p + 1)}
-            className="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-gray-700 dark:text-gray-200 disabled:opacity-40"
+            className={btn("secondary", "sm", "disabled:opacity-40")}
           >
             Next
           </button>
