@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { btn } from "../lib/ui";
+import ThemeToggle from "./ThemeToggle";
 
 const navLinkClass = ({ isActive }) =>
   `text-sm font-medium transition-colors ${
@@ -24,7 +25,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
       <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
         <NavLink to="/" className="font-semibold text-lg tracking-tight text-gray-900 dark:text-white">
-          E-Commerce
+          My E-shop
         </NavLink>
 
         <div className="flex items-center gap-6">
@@ -68,6 +69,9 @@ export default function Navbar() {
               </NavLink>
             </>
           )}
+
+          <div className="h-5 w-px bg-gray-200 dark:bg-gray-800" />
+          <ThemeToggle />
         </div>
       </div>
     </nav>

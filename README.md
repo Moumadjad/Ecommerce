@@ -1,6 +1,6 @@
-# E-Commerce (MERN Stack)
+# My E-shop (MERN Stack)
 
-Project scaffold for a MongoDB / Express / React / Node e-commerce site.
+MongoDB / Express / React / Node e-commerce site.
 
 ## Structure
 
@@ -14,16 +14,6 @@ Project scaffold for a MongoDB / Express / React / Node e-commerce site.
 - **Cart & checkout** — done. Client-side cart (localStorage); checkout form creates an `Order` with server-side price/stock validation.
 - **Payments** — done, but simulated: no Stripe/real gateway. Clicking "Pay now" → "Confirm payment" calls `POST /api/orders/:id/pay`, which always marks the order paid instantly.
 - **Admin dashboard** — done. `/admin` (dashboard stats), `/admin/products` (list/create/edit/delete), `/admin/orders` (list + status updates), all gated by an `AdminRoute` that checks `role === "admin"`.
-
-All planned features are implemented. Every roadmap item below is done.
-
-## Planned features
-
-- ~~**User authentication** — registration/login with JWT, password hashing (bcrypt), protected routes, roles (customer/admin).~~ done
-- ~~**Product catalog** — product model (name, description, price, images, category, stock), public listing/detail pages, admin CRUD.~~ done
-- ~~**Cart & checkout** — client-side/server-synced cart, order creation, order history.~~ done
-- ~~**Payments** — Stripe integration (test mode) for checkout.~~ replaced with a simulated instant-success payment (no real gateway), done
-- ~~**Admin dashboard** — manage products, view orders, basic sales overview.~~ done
 
 ## Getting started
 

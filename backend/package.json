@@ -1,7 +1,7 @@
 {
-  "name": "ecommerce-backend",
+  "name": "my-eshop-backend",
   "version": "1.0.0",
-  "description": "Backend API for the MERN e-commerce project",
+  "description": "Backend API for My E-shop",
   "type": "module",
   "main": "src/server.js",
   "scripts": {

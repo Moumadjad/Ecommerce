@@ -1,5 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
   { to: "/admin", label: "Dashboard", end: true },
@@ -19,10 +20,11 @@ export default function AdminLayout() {
   return (
     <div className="min-h-screen flex bg-gray-50 dark:bg-gray-950">
       <aside className="w-60 shrink-0 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex flex-col">
-        <div className="h-16 flex items-center px-5 border-b border-gray-200 dark:border-gray-800">
+        <div className="h-16 flex items-center justify-between px-5 border-b border-gray-200 dark:border-gray-800">
           <Link to="/admin" className="font-semibold text-lg tracking-tight text-gray-900 dark:text-white">
             Admin
           </Link>
+          <ThemeToggle />
         </div>
 
         <nav className="flex-1 px-3 py-4 space-y-0.5">
