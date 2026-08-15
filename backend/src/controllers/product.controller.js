@@ -7,10 +7,23 @@ export const getProducts = asyncHandler(async function getProducts(req, res) {
 
   const filter = {};
   if (req.query.category) {
-    filter.category = req.query.category.toLowerCase();
+    const categories = req.query.category.split(",").map((c) => c.trim().toLowerCase()).filter(Boolean);
+    if (categories.length === 1) {
+      filter.category = categories[0];
+    } else if (categories.length > 1) {
+      filter.category = { $in: categories };
+    }
   }
   if (req.query.search) {
     filter.name = { $regex: req.query.search, $options: "i" };
+  }
+  if (req.query.minPrice || req.query.maxPrice) {
+    filter.price = {};
+    if (req.query.minPrice) filter.price.$gte = Number(req.query.minPrice);
+    if (req.query.maxPrice) filter.price.$lte = Number(req.query.maxPrice);
+  }
+  if (req.query.inStock === "true") {
+    filter.stock = { $gt: 0 };
   }
 
   const sort = req.query.sort || "-createdAt";
@@ -29,6 +42,11 @@ export const getProducts = asyncHandler(async function getProducts(req, res) {
     pages: Math.ceil(total / limit) || 1,
     total,
   });
+});
+
+export const getCategories = asyncHandler(async function getCategories(req, res) {
+  const categories = await Product.distinct("category");
+  res.json({ categories: categories.sort() });
 });
 
 export const getProductById = asyncHandler(async function getProductById(req, res) {

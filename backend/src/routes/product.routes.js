@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createProduct,
   deleteProduct,
+  getCategories,
   getProductById,
   getProducts,
   updateProduct,
@@ -11,6 +12,7 @@ import { adminOnly, protect } from "../middleware/auth.middleware.js";
 const router = Router();
 
 router.get("/", getProducts);
+router.get("/categories", getCategories);
 router.get("/:id", getProductById);
 router.post("/", protect, adminOnly, createProduct);
 router.put("/:id", protect, adminOnly, updateProduct);

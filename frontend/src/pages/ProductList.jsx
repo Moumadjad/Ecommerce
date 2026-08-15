@@ -1,24 +1,47 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import ProductCard from "../components/ProductCard";
+import ProductFilters from "../components/ProductFilters";
 import { btn, input } from "../lib/ui";
+
+const SORT_OPTIONS = [
+  { value: "-createdAt", label: "Newest" },
+  { value: "price", label: "Price: Low to High" },
+  { value: "-price", label: "Price: High to Low" },
+  { value: "name", label: "Name: A–Z" },
+];
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [inStock, setInStock] = useState(false);
+  const [sort, setSort] = useState("-createdAt");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    api
+      .get("/products/categories")
+      .then(({ data }) => setCategories(data.categories))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     setLoading(true);
     setError("");
 
-    const params = { page };
+    const params = { page, sort };
     if (search) params.search = search;
-    if (category) params.category = category;
+    if (selectedCategories.length > 0) params.category = selectedCategories.join(",");
+    if (minPrice) params.minPrice = minPrice;
+    if (maxPrice) params.maxPrice = maxPrice;
+    if (inStock) params.inStock = "true";
 
     api
       .get("/products", { params })
@@ -28,12 +51,38 @@ export default function ProductList() {
       })
       .catch(() => setError("Failed to load products"))
       .finally(() => setLoading(false));
-  }, [page, search, category]);
+  }, [page, sort, search, selectedCategories, minPrice, maxPrice, inStock]);
 
   function handleSearchSubmit(e) {
     e.preventDefault();
     setPage(1);
     setSearch(e.target.search.value.trim());
+  }
+
+  function toggleCategory(cat) {
+    setPage(1);
+    setSelectedCategories((prev) =>
+      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+    );
+  }
+
+  function handlePriceChange(min, max) {
+    setPage(1);
+    setMinPrice(min);
+    setMaxPrice(max);
+  }
+
+  function handleInStockChange(checked) {
+    setPage(1);
+    setInStock(checked);
+  }
+
+  function handleClearFilters() {
+    setPage(1);
+    setSelectedCategories([]);
+    setMinPrice("");
+    setMaxPrice("");
+    setInStock(false);
   }
 
   return (
@@ -42,64 +91,80 @@ export default function ProductList() {
         <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
           Products
         </h1>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Browse the full catalog.
-        </p>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Browse the full catalog.</p>
       </div>
 
       <form onSubmit={handleSearchSubmit} className="flex flex-wrap gap-3 mb-8">
-        <input type="text" name="search" placeholder="Search products..." className={input("flex-1 min-w-[200px]")} />
         <input
           type="text"
-          value={category}
-          onChange={(e) => {
-            setPage(1);
-            setCategory(e.target.value);
-          }}
-          placeholder="Filter by category..."
-          className={input("sm:w-56")}
+          name="search"
+          placeholder="Search products..."
+          className={input("flex-1 min-w-[200px]")}
         />
+        <select value={sort} onChange={(e) => setSort(e.target.value)} className={input("sm:w-52")}>
+          {SORT_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
         <button type="submit" className={btn("primary")}>
           Search
         </button>
       </form>
 
-      {error && <p className="text-red-600">{error}</p>}
-      {loading && <p className="text-gray-500 dark:text-gray-400">Loading...</p>}
+      <div className="flex flex-col sm:flex-row gap-8 items-start">
+        <ProductFilters
+          categories={categories}
+          selectedCategories={selectedCategories}
+          onToggleCategory={toggleCategory}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          onPriceChange={handlePriceChange}
+          inStock={inStock}
+          onInStockChange={handleInStockChange}
+          onClear={handleClearFilters}
+        />
 
-      {!loading && products.length === 0 && (
-        <p className="text-gray-500 dark:text-gray-400">No products found.</p>
-      )}
+        <div className="flex-1 min-w-0 w-full">
+          {error && <p className="text-red-600">{error}</p>}
+          {loading && <p className="text-gray-500 dark:text-gray-400">Loading...</p>}
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
-        {products.map((product) => (
-          <ProductCard key={product._id} product={product} />
-        ))}
-      </div>
+          {!loading && products.length === 0 && (
+            <p className="text-gray-500 dark:text-gray-400">No products found.</p>
+          )}
 
-      {pages > 1 && (
-        <div className="flex items-center justify-center gap-4 mt-10">
-          <button
-            type="button"
-            disabled={page <= 1}
-            onClick={() => setPage((p) => p - 1)}
-            className={btn("secondary", "sm", "disabled:opacity-40")}
-          >
-            Previous
-          </button>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            Page {page} of {pages}
-          </span>
-          <button
-            type="button"
-            disabled={page >= pages}
-            onClick={() => setPage((p) => p + 1)}
-            className={btn("secondary", "sm", "disabled:opacity-40")}
-          >
-            Next
-          </button>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+            {products.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+
+          {pages > 1 && (
+            <div className="flex items-center justify-center gap-4 mt-10">
+              <button
+                type="button"
+                disabled={page <= 1}
+                onClick={() => setPage((p) => p - 1)}
+                className={btn("secondary", "sm", "disabled:opacity-40")}
+              >
+                Previous
+              </button>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                Page {page} of {pages}
+              </span>
+              <button
+                type="button"
+                disabled={page >= pages}
+                onClick={() => setPage((p) => p + 1)}
+                className={btn("secondary", "sm", "disabled:opacity-40")}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
