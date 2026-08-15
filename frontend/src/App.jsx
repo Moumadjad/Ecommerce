@@ -9,6 +9,7 @@ import AdminProductForm from "./pages/admin/AdminProductForm";
 import AdminProducts from "./pages/admin/AdminProducts";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Favorites from "./pages/Favorites";
 import Login from "./pages/Login";
 import OrderDetail from "./pages/OrderDetail";
 import Orders from "./pages/Orders";
@@ -23,6 +24,7 @@ function App() {
         <Route index element={<ProductList />} />
         <Route path="products/:id" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="favorites" element={<Favorites />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route

@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import { useFavorites } from "../context/FavoritesContext";
 import { btn } from "../lib/ui";
 import ThemeToggle from "./ThemeToggle";
 
@@ -14,6 +15,7 @@ const navLinkClass = ({ isActive }) =>
 export default function Navbar() {
   const { user, logout } = useAuth();
   const { totalItems } = useCart();
+  const { items: favoriteItems } = useFavorites();
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -31,6 +33,16 @@ export default function Navbar() {
         <div className="flex items-center gap-6">
           <NavLink to="/" end className={navLinkClass}>
             Products
+          </NavLink>
+          <NavLink to="/favorites" className={navLinkClass}>
+            <span className="inline-flex items-center gap-1.5">
+              Favorites
+              {favoriteItems.length > 0 && (
+                <span className="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 rounded-full bg-indigo-600 text-white text-xs font-semibold">
+                  {favoriteItems.length}
+                </span>
+              )}
+            </span>
           </NavLink>
           <NavLink to="/cart" className={navLinkClass}>
             <span className="inline-flex items-center gap-1.5">
