@@ -2,14 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import ProductCard from "../components/ProductCard";
 import ProductFilters from "../components/ProductFilters";
-import { btn, input } from "../lib/ui";
-
-const SORT_OPTIONS = [
-  { value: "-createdAt", label: "Newest" },
-  { value: "price", label: "Price: Low to High" },
-  { value: "-price", label: "Price: High to Low" },
-  { value: "name", label: "Name: A–Z" },
-];
+import { btn } from "../lib/ui";
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
@@ -53,10 +46,9 @@ export default function ProductList() {
       .finally(() => setLoading(false));
   }, [page, sort, search, selectedCategories, minPrice, maxPrice, inStock]);
 
-  function handleSearchSubmit(e) {
-    e.preventDefault();
+  function handleSearchChange(value) {
     setPage(1);
-    setSearch(e.target.search.value.trim());
+    setSearch(value);
   }
 
   function toggleCategory(cat) {
@@ -77,8 +69,14 @@ export default function ProductList() {
     setInStock(checked);
   }
 
+  function handleSortChange(value) {
+    setPage(1);
+    setSort(value);
+  }
+
   function handleClearFilters() {
     setPage(1);
+    setSearch("");
     setSelectedCategories([]);
     setMinPrice("");
     setMaxPrice("");
@@ -94,27 +92,10 @@ export default function ProductList() {
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Browse the full catalog.</p>
       </div>
 
-      <form onSubmit={handleSearchSubmit} className="flex flex-wrap gap-3 mb-8">
-        <input
-          type="text"
-          name="search"
-          placeholder="Search products..."
-          className={input("flex-1 min-w-[200px]")}
-        />
-        <select value={sort} onChange={(e) => setSort(e.target.value)} className={input("sm:w-52")}>
-          {SORT_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-        <button type="submit" className={btn("primary")}>
-          Search
-        </button>
-      </form>
-
       <div className="flex flex-col sm:flex-row gap-8 items-start">
         <ProductFilters
+          search={search}
+          onSearchChange={handleSearchChange}
           categories={categories}
           selectedCategories={selectedCategories}
           onToggleCategory={toggleCategory}
@@ -123,6 +104,8 @@ export default function ProductList() {
           onPriceChange={handlePriceChange}
           inStock={inStock}
           onInStockChange={handleInStockChange}
+          sort={sort}
+          onSortChange={handleSortChange}
           onClear={handleClearFilters}
         />
 
@@ -134,7 +117,7 @@ export default function ProductList() {
             <p className="text-gray-500 dark:text-gray-400">No products found.</p>
           )}
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}

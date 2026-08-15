@@ -11,7 +11,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <Navbar />
-      <main className={`max-w-5xl mx-auto px-4 pt-10 ${showCartBar ? "pb-28" : "pb-10"}`}>
+      <main className={`max-w-7xl mx-auto px-4 pt-10 ${showCartBar ? "pb-28" : "pb-10"}`}>
         <Outlet />
       </main>
       <CartBar />

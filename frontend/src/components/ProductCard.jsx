@@ -67,7 +67,7 @@ export default function ProductCard({ product }) {
               onClick={() => addToCart(product, 1)}
               aria-label="Add to cart"
               title="Add to cart"
-              className="pointer-events-auto relative z-10 h-8 w-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-500 transition-colors shrink-0"
+              className="pointer-events-auto relative z-10 h-8 w-8 rounded-lg bg-amber-700 text-white flex items-center justify-center hover:bg-amber-600 transition-colors shrink-0"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -69,7 +69,7 @@ export default function AdminDashboard() {
               <Link
                 key={product._id}
                 to={`/admin/products/${product._id}/edit`}
-                className="flex justify-between py-2.5 text-sm hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                className="flex justify-between py-2.5 text-sm hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
               >
                 <span className="text-gray-900 dark:text-gray-100">{product.name}</span>
                 <span className="text-red-600 dark:text-red-400">{product.stock} left</span>
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
               <Link
                 key={order._id}
                 to={`/orders/${order._id}`}
-                className="flex items-center justify-between py-2.5 text-sm hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                className="flex items-center justify-between py-2.5 text-sm hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
               >
                 <span className="text-gray-700 dark:text-gray-300">
                   {order.user?.name} — ${order.totalPrice.toFixed(2)}

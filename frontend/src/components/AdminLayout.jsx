@@ -36,7 +36,7 @@ export default function AdminLayout() {
               className={({ isActive }) =>
                 `block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300"
+                    ? "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300"
                     : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
                 }`
               }
@@ -48,7 +48,7 @@ export default function AdminLayout() {
 
         <div className="p-4 border-t border-gray-200 dark:border-gray-800 space-y-3">
           <div className="flex items-center gap-2.5 px-1">
-            <div className="h-8 w-8 rounded-full bg-indigo-600 text-white text-sm font-semibold flex items-center justify-center shrink-0">
+            <div className="h-8 w-8 rounded-full bg-amber-700 text-white text-sm font-semibold flex items-center justify-center shrink-0">
               {user.name.charAt(0).toUpperCase()}
             </div>
             <p className="text-sm text-gray-700 dark:text-gray-300 truncate">{user.name}</p>

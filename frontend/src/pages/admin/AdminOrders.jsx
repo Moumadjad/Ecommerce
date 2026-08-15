@@ -75,7 +75,7 @@ export default function AdminOrders() {
                         value={order.status}
                         disabled={updatingId === order._id}
                         onChange={(e) => handleStatusChange(order, e.target.value)}
-                        className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-xs px-2 py-1 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                        className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-xs px-2 py-1 focus:border-amber-600 focus:ring-1 focus:ring-amber-600 focus:outline-none"
                       >
                         {STATUSES.map((status) => (
                           <option key={status} value={status}>
@@ -88,7 +88,7 @@ export default function AdminOrders() {
                   <td className="py-3 pr-5 text-right">
                     <Link
                       to={`/orders/${order._id}`}
-                      className="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium transition-colors"
+                      className="text-amber-700 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300 font-medium transition-colors"
                     >
                       View
                     </Link>

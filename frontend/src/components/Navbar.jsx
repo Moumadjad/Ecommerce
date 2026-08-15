@@ -25,7 +25,7 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
-      <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         <NavLink to="/" className="font-semibold text-lg tracking-tight text-gray-900 dark:text-white">
           My E-shop
         </NavLink>
@@ -38,7 +38,7 @@ export default function Navbar() {
             <span className="inline-flex items-center gap-1.5">
               Favorites
               {favoriteItems.length > 0 && (
-                <span className="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 rounded-full bg-indigo-600 text-white text-xs font-semibold">
+                <span className="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 rounded-full bg-amber-700 text-white text-xs font-semibold">
                   {favoriteItems.length}
                 </span>
               )}
@@ -48,7 +48,7 @@ export default function Navbar() {
             <span className="inline-flex items-center gap-1.5">
               Cart
               {totalItems > 0 && (
-                <span className="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 rounded-full bg-indigo-600 text-white text-xs font-semibold">
+                <span className="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 rounded-full bg-amber-700 text-white text-xs font-semibold">
                   {totalItems}
                 </span>
               )}

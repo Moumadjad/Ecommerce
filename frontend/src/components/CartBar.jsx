@@ -43,7 +43,7 @@ export default function CartBar() {
           <p className="text-sm text-gray-500 dark:text-gray-400">${totalPrice.toFixed(2)}</p>
         </div>
 
-        <span className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 text-white px-4 py-2 text-sm font-medium">
+        <span className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-amber-700 text-white px-4 py-2 text-sm font-medium">
           View cart
           <svg
             xmlns="http://www.w3.org/2000/svg"

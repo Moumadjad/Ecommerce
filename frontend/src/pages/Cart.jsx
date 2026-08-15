@@ -60,9 +60,22 @@ export default function Cart() {
             <button
               type="button"
               onClick={() => removeFromCart(item.productId)}
-              className="text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+              aria-label="Remove item"
+              title="Remove item"
+              className="shrink-0 h-8 w-8 rounded-lg flex items-center justify-center text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20 transition-colors"
             >
-              Remove
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-4 w-4"
+              >
+                <path d="M6 7h12M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0-1 12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 7h14ZM10 11v6M14 11v6" />
+              </svg>
             </button>
           </div>
         ))}
