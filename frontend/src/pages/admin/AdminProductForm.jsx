@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../../api/client";
 import { btn, card, input, label as labelClass } from "../../lib/ui";
 
@@ -10,6 +10,7 @@ const EMPTY_FORM = {
   category: "",
   stock: "",
   images: "",
+  isActive: true,
 };
 
 export default function AdminProductForm() {
@@ -18,24 +19,33 @@ export default function AdminProductForm() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState(EMPTY_FORM);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(isEditing);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
+    api
+      .get("/categories", { params: { includeInactive: true } })
+      .then(({ data }) => setCategories(data.categories))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     if (!isEditing) return;
 
     api
-      .get(`/products/${id}`)
+      .get(`/products/${id}`, { params: { includeInactive: true } })
       .then(({ data }) => {
         const p = data.product;
         setForm({
           name: p.name,
           description: p.description,
           price: p.price,
-          category: p.category,
+          category: p.category?._id || "",
           stock: p.stock,
           images: (p.images || []).join(", "),
+          isActive: p.isActive,
         });
       })
       .catch(() => setError("Failed to load product"))
@@ -43,7 +53,8 @@ export default function AdminProductForm() {
   }, [id, isEditing]);
 
   function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, type, checked, value } = e.target;
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
   }
 
   async function handleSubmit(e) {
@@ -57,6 +68,7 @@ export default function AdminProductForm() {
       price: Number(form.price),
       category: form.category,
       stock: Number(form.stock),
+      isActive: form.isActive,
       images: form.images
         .split(",")
         .map((url) => url.trim())
@@ -146,14 +158,33 @@ export default function AdminProductForm() {
 
         <div>
           <label className={labelClass()}>Category</label>
-          <input
-            type="text"
-            name="category"
-            required
-            value={form.category}
-            onChange={handleChange}
-            className={input("mt-1")}
-          />
+          {categories.length === 0 ? (
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              No categories yet.{" "}
+              <Link to="/admin/categories" className="text-amber-700 dark:text-amber-400 hover:underline">
+                Create one first
+              </Link>
+              .
+            </p>
+          ) : (
+            <select
+              name="category"
+              required
+              value={form.category}
+              onChange={handleChange}
+              className={input("mt-1")}
+            >
+              <option value="" disabled>
+                Select a category
+              </option>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
+                  {!cat.isActive ? " (inactive)" : ""}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
 
         <div>
@@ -167,6 +198,17 @@ export default function AdminProductForm() {
             className={input("mt-1")}
           />
         </div>
+
+        <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+          <input
+            type="checkbox"
+            name="isActive"
+            checked={form.isActive}
+            onChange={handleChange}
+            className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 accent-amber-700 focus:ring-1 focus:ring-amber-600 dark:bg-gray-800 cursor-pointer"
+          />
+          Active (visible to customers)
+        </label>
 
         <button type="submit" disabled={submitting} className={btn("primary")}>
           {submitting ? "Saving..." : isEditing ? "Save changes" : "Create product"}

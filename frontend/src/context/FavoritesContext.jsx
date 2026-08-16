@@ -34,7 +34,7 @@ export function FavoritesProvider({ children }) {
               name: product.name,
               price: product.price,
               image: product.images?.[0],
-              category: product.category,
+              category: typeof product.category === "object" ? product.category?.name : product.category,
               stock: product.stock,
             },
           ]

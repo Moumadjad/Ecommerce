@@ -20,7 +20,7 @@ export default function ProductList() {
 
   useEffect(() => {
     api
-      .get("/products/categories")
+      .get("/categories")
       .then(({ data }) => setCategories(data.categories))
       .catch(() => {});
   }, []);

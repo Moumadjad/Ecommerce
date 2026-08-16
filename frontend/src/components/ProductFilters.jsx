@@ -135,16 +135,16 @@ export default function ProductFilters({
             <div className="space-y-2">
               {categories.map((cat) => (
                 <label
-                  key={cat}
+                  key={cat._id}
                   className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 capitalize cursor-pointer"
                 >
                   <input
                     type="checkbox"
-                    checked={selectedCategories.includes(cat)}
-                    onChange={() => onToggleCategory(cat)}
+                    checked={selectedCategories.includes(cat._id)}
+                    onChange={() => onToggleCategory(cat._id)}
                     className={CHECKBOX_CLASS}
                   />
-                  {cat}
+                  {cat.name}
                 </label>
               ))}
             </div>

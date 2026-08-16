@@ -52,7 +52,7 @@ export default function ProductDetail() {
 
       <div>
         <p className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide">
-          {product.category}
+          {product.category?.name}
         </p>
         <h1 className="mt-1 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
           {product.name}

@@ -5,6 +5,7 @@ import ThemeToggle from "./ThemeToggle";
 const navItems = [
   { to: "/admin", label: "Dashboard", end: true },
   { to: "/admin/products", label: "Products" },
+  { to: "/admin/categories", label: "Categories" },
   { to: "/admin/orders", label: "Orders" },
 ];
 

@@ -2,23 +2,45 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../api/client";
 import OrderStatusBadge from "../../components/OrderStatusBadge";
-import { card } from "../../lib/ui";
+import { EyeIcon, SearchIcon } from "../../components/icons";
+import { btn, card, input } from "../../lib/ui";
 
 const STATUSES = ["pending", "paid", "shipped", "delivered", "cancelled"];
+const PAGE_SIZES = [10, 20, 50, 100];
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState(null);
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
+  const [limit, setLimit] = useState(20);
+  const [searchInput, setSearchInput] = useState("");
+  const [search, setSearch] = useState("");
   const [error, setError] = useState("");
   const [updatingId, setUpdatingId] = useState(null);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const trimmed = searchInput.trim();
+      if (trimmed !== search) {
+        setPage(1);
+        setSearch(trimmed);
+      }
+    }, 400);
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput]);
+
   function load() {
     api
-      .get("/orders")
-      .then(({ data }) => setOrders(data.orders))
+      .get("/orders", { params: { page, limit, search: search || undefined } })
+      .then(({ data }) => {
+        setOrders(data.orders);
+        setPages(data.pages);
+      })
       .catch(() => setError("Failed to load orders"));
   }
 
-  useEffect(load, []);
+  useEffect(load, [page, limit, search]);
 
   async function handleStatusChange(order, status) {
     setUpdatingId(order._id);
@@ -38,9 +60,36 @@ export default function AdminOrders() {
         Orders
       </h1>
 
+      <div className="flex flex-wrap gap-3 mb-4">
+        <div className="relative flex-1 min-w-[200px]">
+          <SearchIcon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Search by customer name or email..."
+            className={input("pl-9")}
+          />
+        </div>
+        <select
+          value={limit}
+          onChange={(e) => {
+            setLimit(Number(e.target.value));
+            setPage(1);
+          }}
+          className={input("sm:w-40")}
+        >
+          {PAGE_SIZES.map((size) => (
+            <option key={size} value={size}>
+              {size} per page
+            </option>
+          ))}
+        </select>
+      </div>
+
       {error && <p className="text-red-600">{error}</p>}
       {orders === null && !error && <p className="text-gray-500 dark:text-gray-400">Loading...</p>}
-      {orders?.length === 0 && <p className="text-gray-500 dark:text-gray-400">No orders yet.</p>}
+      {orders?.length === 0 && <p className="text-gray-500 dark:text-gray-400">No orders found.</p>}
 
       {orders?.length > 0 && (
         <div className={card("overflow-x-auto")}>
@@ -88,15 +137,41 @@ export default function AdminOrders() {
                   <td className="py-3 pr-5 text-right">
                     <Link
                       to={`/orders/${order._id}`}
-                      className="text-amber-700 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300 font-medium transition-colors"
+                      aria-label="View order"
+                      title="View order"
+                      className="inline-flex text-amber-700 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300 transition-colors"
                     >
-                      View
+                      <EyeIcon className="h-4 w-4" />
                     </Link>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {pages > 1 && (
+        <div className="flex items-center justify-center gap-4 mt-6">
+          <button
+            type="button"
+            disabled={page <= 1}
+            onClick={() => setPage((p) => p - 1)}
+            className={btn("secondary", "sm", "disabled:opacity-40")}
+          >
+            Previous
+          </button>
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            Page {page} of {pages}
+          </span>
+          <button
+            type="button"
+            disabled={page >= pages}
+            onClick={() => setPage((p) => p + 1)}
+            className={btn("secondary", "sm", "disabled:opacity-40")}
+          >
+            Next
+          </button>
         </div>
       )}
     </div>

@@ -3,6 +3,7 @@ import AdminLayout from "./components/AdminLayout";
 import { AdminRoute } from "./components/AdminRoute";
 import Layout from "./components/Layout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import AdminCategories from "./pages/admin/AdminCategories";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminProductForm from "./pages/admin/AdminProductForm";
@@ -65,6 +66,7 @@ function App() {
         <Route path="products" element={<AdminProducts />} />
         <Route path="products/new" element={<AdminProductForm />} />
         <Route path="products/:id/edit" element={<AdminProductForm />} />
+        <Route path="categories" element={<AdminCategories />} />
         <Route path="orders" element={<AdminOrders />} />
       </Route>
     </Routes>

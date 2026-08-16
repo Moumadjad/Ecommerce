@@ -7,6 +7,8 @@ export default function ProductCard({ product }) {
   const { addToCart } = useCart();
   const { isFavorite, toggleFavorite } = useFavorites();
   const favorited = isFavorite(product._id);
+  const categoryName =
+    typeof product.category === "object" ? product.category?.name : product.category;
 
   return (
     <div
@@ -52,7 +54,7 @@ export default function ProductCard({ product }) {
       </div>
       <div className="pointer-events-none p-4">
         <p className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide">
-          {product.category}
+          {categoryName}
         </p>
         <h3 className="mt-1 font-medium text-gray-900 dark:text-gray-100">{product.name}</h3>
         <div className="mt-2 flex items-center justify-between gap-2">

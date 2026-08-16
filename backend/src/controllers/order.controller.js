@@ -1,5 +1,6 @@
 import { Order } from "../models/Order.js";
 import { Product } from "../models/Product.js";
+import { User } from "../models/User.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const createOrder = asyncHandler(async function createOrder(req, res) {
@@ -55,8 +56,35 @@ export const getMyOrders = asyncHandler(async function getMyOrders(req, res) {
 });
 
 export const getOrders = asyncHandler(async function getOrders(req, res) {
-  const orders = await Order.find().sort("-createdAt").populate("user", "name email");
-  res.json({ orders });
+  const page = Math.max(1, parseInt(req.query.page) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
+
+  const filter = {};
+  if (req.query.search) {
+    const matchingUserIds = await User.find({
+      $or: [
+        { name: { $regex: req.query.search, $options: "i" } },
+        { email: { $regex: req.query.search, $options: "i" } },
+      ],
+    }).distinct("_id");
+    filter.user = { $in: matchingUserIds };
+  }
+
+  const [orders, total] = await Promise.all([
+    Order.find(filter)
+      .sort("-createdAt")
+      .populate("user", "name email")
+      .skip((page - 1) * limit)
+      .limit(limit),
+    Order.countDocuments(filter),
+  ]);
+
+  res.json({
+    orders,
+    page,
+    pages: Math.ceil(total / limit) || 1,
+    total,
+  });
 });
 
 export const getOrderById = asyncHandler(async function getOrderById(req, res) {

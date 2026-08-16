@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { api } from "../../api/client";
-import { CheckCircleIcon, PencilIcon, PlusIcon, SearchIcon, TrashIcon, XCircleIcon } from "../../components/icons";
+import { CheckCircleIcon, PlusIcon, SearchIcon, TrashIcon, XCircleIcon } from "../../components/icons";
 import { btn, card, input } from "../../lib/ui";
 
 const PAGE_SIZES = [10, 20, 50, 100];
 
-export default function AdminProducts() {
-  const [products, setProducts] = useState([]);
+export default function AdminCategories() {
+  const [categories, setCategories] = useState([]);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [limit, setLimit] = useState(20);
@@ -15,6 +14,9 @@ export default function AdminProducts() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [name, setName] = useState("");
+  const [createError, setCreateError] = useState("");
+  const [creating, setCreating] = useState(false);
   const [updatingId, setUpdatingId] = useState(null);
 
   useEffect(() => {
@@ -32,50 +34,84 @@ export default function AdminProducts() {
   function load() {
     setLoading(true);
     api
-      .get("/products", { params: { page, limit, search: search || undefined, includeInactive: true } })
+      .get("/categories", { params: { page, limit, search: search || undefined, includeInactive: true } })
       .then(({ data }) => {
-        setProducts(data.products);
+        setCategories(data.categories);
         setPages(data.pages);
       })
-      .catch(() => setError("Failed to load products"))
+      .catch(() => setError("Failed to load categories"))
       .finally(() => setLoading(false));
   }
 
   useEffect(load, [page, limit, search]);
 
-  async function handleDelete(product) {
-    if (!confirm(`Delete "${product.name}"?`)) return;
+  async function handleCreate(e) {
+    e.preventDefault();
+    setCreateError("");
+    setCreating(true);
     try {
-      await api.delete(`/products/${product._id}`);
+      await api.post("/categories", { name });
+      setName("");
       load();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete product");
+      setCreateError(err.response?.data?.message || "Failed to create category");
+    } finally {
+      setCreating(false);
     }
   }
 
-  async function handleToggleActive(product) {
-    setUpdatingId(product._id);
+  async function handleToggleActive(category) {
+    setUpdatingId(category._id);
     try {
-      await api.put(`/products/${product._id}`, { isActive: !product.isActive });
+      await api.put(`/categories/${category._id}`, { isActive: !category.isActive });
       load();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to update product");
+      alert(err.response?.data?.message || "Failed to update category");
     } finally {
       setUpdatingId(null);
     }
   }
 
+  async function handleDelete(category) {
+    if (!confirm(`Delete category "${category.name}"?`)) return;
+    try {
+      await api.delete(`/categories/${category._id}`);
+      load();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete category");
+    }
+  }
+
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          Products
-        </h1>
-        <Link to="/admin/products/new" className={btn("primary")}>
-          <PlusIcon className="h-4 w-4" />
-          New product
-        </Link>
-      </div>
+      <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white mb-6">
+        Categories
+      </h1>
+
+      <form onSubmit={handleCreate} className={card("max-w-md p-5 mb-8 space-y-3")}>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          New category
+        </label>
+        {createError && (
+          <p className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded-lg px-3 py-2">
+            {createError}
+          </p>
+        )}
+        <div className="flex gap-3">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. Toys"
+            required
+            className={input()}
+          />
+          <button type="submit" disabled={creating} className={btn("primary")}>
+            <PlusIcon className="h-4 w-4" />
+            {creating ? "Adding..." : "Add"}
+          </button>
+        </div>
+      </form>
 
       <div className="flex flex-wrap gap-3 mb-4">
         <div className="relative flex-1 min-w-[200px]">
@@ -84,7 +120,7 @@ export default function AdminProducts() {
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Search products..."
+            placeholder="Search categories..."
             className={input("pl-9")}
           />
         </div>
@@ -107,67 +143,48 @@ export default function AdminProducts() {
       {error && <p className="text-red-600">{error}</p>}
       {loading && <p className="text-gray-500 dark:text-gray-400">Loading...</p>}
 
-      {!loading && products.length === 0 && (
-        <p className="text-gray-500 dark:text-gray-400">No products found.</p>
+      {!loading && categories.length === 0 && (
+        <p className="text-gray-500 dark:text-gray-400">No categories found.</p>
       )}
 
-      {!loading && products.length > 0 && (
+      {categories.length > 0 && (
         <div className={card("overflow-x-auto")}>
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-800">
                 <th className="py-3 pl-5 pr-4 font-medium">Name</th>
-                <th className="py-3 pr-4 font-medium">Category</th>
-                <th className="py-3 pr-4 font-medium">Price</th>
-                <th className="py-3 pr-4 font-medium">Stock</th>
                 <th className="py-3 pr-4 font-medium">Status</th>
                 <th className="py-3 pr-5"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
-              {products.map((product) => (
-                <tr key={product._id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                  <td className="py-3 pl-5 pr-4 text-gray-900 dark:text-gray-100">{product.name}</td>
-                  <td className="py-3 pr-4 text-gray-600 dark:text-gray-300 capitalize">
-                    {product.category?.name}
-                    {product.category && !product.category.isActive && (
-                      <span className="ml-1 text-xs text-gray-400">(inactive)</span>
-                    )}
+              {categories.map((category) => (
+                <tr key={category._id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                  <td className="py-3 pl-5 pr-4 text-gray-900 dark:text-gray-100 capitalize">
+                    {category.name}
                   </td>
-                  <td className="py-3 pr-4 text-gray-600 dark:text-gray-300">
-                    ${product.price.toFixed(2)}
-                  </td>
-                  <td className="py-3 pr-4 text-gray-600 dark:text-gray-300">{product.stock}</td>
                   <td className="py-3 pr-4">
                     <span
                       className={`text-xs font-medium px-2 py-1 rounded-full ${
-                        product.isActive
+                        category.isActive
                           ? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300"
                           : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
                       }`}
                     >
-                      {product.isActive ? "Active" : "Inactive"}
+                      {category.isActive ? "Active" : "Inactive"}
                     </span>
                   </td>
                   <td className="py-3 pr-5 text-right">
                     <div className="flex items-center justify-end gap-3">
-                      <Link
-                        to={`/admin/products/${product._id}/edit`}
-                        aria-label="Edit product"
-                        title="Edit product"
-                        className="inline-flex text-amber-700 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300 transition-colors"
-                      >
-                        <PencilIcon className="h-4 w-4" />
-                      </Link>
                       <button
                         type="button"
-                        onClick={() => handleToggleActive(product)}
-                        disabled={updatingId === product._id}
-                        aria-label={product.isActive ? "Deactivate product" : "Activate product"}
-                        title={product.isActive ? "Deactivate product" : "Activate product"}
+                        onClick={() => handleToggleActive(category)}
+                        disabled={updatingId === category._id}
+                        aria-label={category.isActive ? "Deactivate category" : "Activate category"}
+                        title={category.isActive ? "Deactivate category" : "Activate category"}
                         className="inline-flex text-amber-700 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300 transition-colors disabled:opacity-50"
                       >
-                        {product.isActive ? (
+                        {category.isActive ? (
                           <XCircleIcon className="h-4 w-4" />
                         ) : (
                           <CheckCircleIcon className="h-4 w-4" />
@@ -175,9 +192,9 @@ export default function AdminProducts() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => handleDelete(product)}
-                        aria-label="Delete product"
-                        title="Delete product"
+                        onClick={() => handleDelete(category)}
+                        aria-label="Delete category"
+                        title="Delete category"
                         className="inline-flex text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
                       >
                         <TrashIcon className="h-4 w-4" />
