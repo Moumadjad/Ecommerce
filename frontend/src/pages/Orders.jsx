@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api/client";
 import OrderStatusBadge from "../components/OrderStatusBadge";
+import { formatCurrency } from "../lib/currency";
 import { card, link } from "../lib/ui";
 
 export default function Orders() {
@@ -41,11 +42,11 @@ export default function Orders() {
           >
             <div>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                {new Date(order.createdAt).toLocaleDateString()}
+                {order.orderNumber} · {new Date(order.createdAt).toLocaleDateString()}
               </p>
               <p className="text-gray-900 dark:text-gray-100">
-                {order.items.length} item{order.items.length > 1 ? "s" : ""} — $
-                {order.totalPrice.toFixed(2)}
+                {order.items.length} item{order.items.length > 1 ? "s" : ""} —{" "}
+                {formatCurrency(order.totalPrice)}
               </p>
             </div>
             <OrderStatusBadge status={order.status} />

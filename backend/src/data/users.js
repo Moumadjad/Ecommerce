@@ -11,4 +11,16 @@ export const users = [
     password: "customer1234",
     role: "customer",
   },
+  {
+    name: "John Mensah",
+    email: "john@example.com",
+    password: "customer1234",
+    role: "customer",
+  },
+  {
+    name: "Amina Diallo",
+    email: "amina@example.com",
+    password: "customer1234",
+    role: "customer",
+  },
 ];

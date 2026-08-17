@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/client";
 import { useCart } from "../context/CartContext";
+import { formatCurrency } from "../lib/currency";
 import { btn, input, link } from "../lib/ui";
 
 export default function ProductDetail() {
@@ -58,7 +59,7 @@ export default function ProductDetail() {
           {product.name}
         </h1>
         <p className="mt-3 text-2xl font-semibold text-gray-900 dark:text-white">
-          ${product.price.toFixed(2)}
+          {formatCurrency(product.price)}
         </p>
         <p className="mt-4 text-gray-600 dark:text-gray-300 leading-relaxed">{product.description}</p>
 

@@ -1,6 +1,7 @@
 import { Order } from "../models/Order.js";
 import { Product } from "../models/Product.js";
 import { User } from "../models/User.js";
+import { getNextSequence } from "../models/Counter.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const createOrder = asyncHandler(async function createOrder(req, res) {
@@ -40,7 +41,11 @@ export const createOrder = asyncHandler(async function createOrder(req, res) {
     await Product.updateOne({ _id: item.product }, { $inc: { stock: -item.quantity } });
   }
 
+  const seq = await getNextSequence("orderNumber");
+  const orderNumber = `ORD-${String(seq).padStart(6, "0")}`;
+
   const order = await Order.create({
+    orderNumber,
     user: req.user._id,
     items: orderItems,
     shippingAddress,
@@ -60,7 +65,9 @@ export const getOrders = asyncHandler(async function getOrders(req, res) {
   const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
 
   const filter = {};
-  if (req.query.search) {
+  if (req.query.user) {
+    filter.user = req.query.user;
+  } else if (req.query.search) {
     const matchingUserIds = await User.find({
       $or: [
         { name: { $regex: req.query.search, $options: "i" } },

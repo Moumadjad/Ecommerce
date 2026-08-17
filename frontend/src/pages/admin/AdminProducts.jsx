@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../api/client";
 import { CheckCircleIcon, PencilIcon, PlusIcon, SearchIcon, TrashIcon, XCircleIcon } from "../../components/icons";
+import { formatCurrency } from "../../lib/currency";
 import { btn, card, input } from "../../lib/ui";
 
 const PAGE_SIZES = [10, 20, 50, 100];
@@ -135,7 +136,7 @@ export default function AdminProducts() {
                     )}
                   </td>
                   <td className="py-3 pr-4 text-gray-600 dark:text-gray-300">
-                    ${product.price.toFixed(2)}
+                    {formatCurrency(product.price)}
                   </td>
                   <td className="py-3 pr-4 text-gray-600 dark:text-gray-300">{product.stock}</td>
                   <td className="py-3 pr-4">

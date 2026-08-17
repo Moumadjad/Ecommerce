@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../api/client";
 import OrderStatusBadge from "../../components/OrderStatusBadge";
+import { formatCurrency } from "../../lib/currency";
 import { card } from "../../lib/ui";
 
 function StatCard({ label, value }) {
@@ -34,7 +35,7 @@ export default function AdminDashboard() {
       </h1>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatCard label="Revenue" value={`$${stats.totalRevenue.toFixed(2)}`} />
+        <StatCard label="Revenue" value={formatCurrency(stats.totalRevenue)} />
         <StatCard label="Orders" value={stats.totalOrders} />
         <StatCard label="Products" value={stats.totalProducts} />
         <StatCard label="Users" value={stats.totalUsers} />
@@ -90,11 +91,11 @@ export default function AdminDashboard() {
             {stats.recentOrders.map((order) => (
               <Link
                 key={order._id}
-                to={`/orders/${order._id}`}
+                to={`/admin/orders/${order._id}`}
                 className="flex items-center justify-between py-2.5 text-sm hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
               >
                 <span className="text-gray-700 dark:text-gray-300">
-                  {order.user?.name} — ${order.totalPrice.toFixed(2)}
+                  {order.user?.name} — {formatCurrency(order.totalPrice)}
                 </span>
                 <OrderStatusBadge status={order.status} />
               </Link>

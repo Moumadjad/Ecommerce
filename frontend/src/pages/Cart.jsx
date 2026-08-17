@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import { formatCurrency } from "../lib/currency";
 import { btn, card, input, link } from "../lib/ui";
 
 export default function Cart() {
@@ -42,7 +43,7 @@ export default function Cart() {
             )}
             <div className="flex-1">
               <p className="font-medium text-gray-900 dark:text-gray-100">{item.name}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">${item.price.toFixed(2)}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{formatCurrency(item.price)}</p>
             </div>
             <div className="w-16 shrink-0">
               <input
@@ -54,8 +55,8 @@ export default function Cart() {
                 className={input()}
               />
             </div>
-            <p className="w-20 text-right font-medium text-gray-900 dark:text-gray-100">
-              ${(item.price * item.quantity).toFixed(2)}
+            <p className="w-28 shrink-0 text-right font-medium text-gray-900 dark:text-gray-100">
+              {formatCurrency(item.price * item.quantity)}
             </p>
             <button
               type="button"
@@ -83,7 +84,7 @@ export default function Cart() {
 
       <div className="mt-6 flex items-center justify-between">
         <p className="text-lg font-semibold text-gray-900 dark:text-white">
-          Total: ${totalPrice.toFixed(2)}
+          Total: {formatCurrency(totalPrice)}
         </p>
         <button type="button" onClick={handleCheckout} className={btn("primary", "lg")}>
           Checkout

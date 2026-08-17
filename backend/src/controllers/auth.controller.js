@@ -43,6 +43,10 @@ export const login = asyncHandler(async function login(req, res) {
     return res.status(401).json({ message: "Invalid email or password" });
   }
 
+  if (!user.isActive) {
+    return res.status(401).json({ message: "Your account has been deactivated" });
+  }
+
   res.json({
     user: toPublicUser(user),
     token: generateToken(user._id),

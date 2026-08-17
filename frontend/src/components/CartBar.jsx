@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { formatCurrency } from "../lib/currency";
 
 const MAX_THUMBS = 5;
 
@@ -40,7 +41,7 @@ export default function CartBar() {
           <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
             {totalItems} item{totalItems > 1 ? "s" : ""} in cart
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">${totalPrice.toFixed(2)}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{formatCurrency(totalPrice)}</p>
         </div>
 
         <span className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-amber-700 text-white px-4 py-2 text-sm font-medium">

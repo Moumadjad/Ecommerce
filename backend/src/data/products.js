@@ -3,7 +3,7 @@ export const products = [
   {
     name: "Classic T-Shirt",
     description: "A soft, everyday cotton t-shirt.",
-    price: 19.99,
+    price: 12000,
     images: ["https://picsum.photos/seed/tshirt/600/600"],
     category: "clothing",
     stock: 50,
@@ -11,7 +11,7 @@ export const products = [
   {
     name: "Denim Jacket",
     description: "A timeless denim jacket for all seasons.",
-    price: 59.99,
+    price: 36000,
     images: ["https://picsum.photos/seed/jacket/600/600"],
     category: "clothing",
     stock: 20,
@@ -19,7 +19,7 @@ export const products = [
   {
     name: "Pullover Hoodie",
     description: "Fleece-lined hoodie with a kangaroo pocket.",
-    price: 44.99,
+    price: 27000,
     images: ["https://picsum.photos/seed/hoodie/600/600"],
     category: "clothing",
     stock: 35,
@@ -27,7 +27,7 @@ export const products = [
   {
     name: "Running Shorts",
     description: "Lightweight, breathable shorts with a zip pocket.",
-    price: 27.5,
+    price: 16500,
     images: ["https://picsum.photos/seed/shorts/600/600"],
     category: "clothing",
     stock: 40,
@@ -35,7 +35,7 @@ export const products = [
   {
     name: "Wool Beanie",
     description: "Warm knit beanie, one size fits most.",
-    price: 16.0,
+    price: 9500,
     images: ["https://picsum.photos/seed/beanie/600/600"],
     category: "clothing",
     stock: 60,
@@ -43,7 +43,7 @@ export const products = [
   {
     name: "Leather Belt",
     description: "Full-grain leather belt with a brushed buckle.",
-    price: 32.0,
+    price: 19000,
     images: ["https://picsum.photos/seed/belt/600/600"],
     category: "clothing",
     stock: 45,
@@ -51,7 +51,7 @@ export const products = [
   {
     name: "Packable Rain Jacket",
     description: "Waterproof shell jacket that packs into its own pocket.",
-    price: 68.0,
+    price: 41000,
     images: ["https://picsum.photos/seed/rainjacket/600/600"],
     category: "clothing",
     stock: 18,
@@ -61,7 +61,7 @@ export const products = [
   {
     name: "Ceramic Coffee Mug",
     description: "A 350ml ceramic mug, dishwasher safe.",
-    price: 9.5,
+    price: 5500,
     images: ["https://picsum.photos/seed/mug/600/600"],
     category: "kitchen",
     stock: 100,
@@ -69,7 +69,7 @@ export const products = [
   {
     name: "Stainless Steel Water Bottle",
     description: "Keeps drinks cold for 24h, hot for 12h.",
-    price: 24.0,
+    price: 14500,
     images: ["https://picsum.photos/seed/bottle/600/600"],
     category: "kitchen",
     stock: 75,
@@ -77,7 +77,7 @@ export const products = [
   {
     name: "Cast Iron Skillet",
     description: "10-inch pre-seasoned cast iron skillet.",
-    price: 39.99,
+    price: 24000,
     images: ["https://picsum.photos/seed/skillet/600/600"],
     category: "kitchen",
     stock: 22,
@@ -85,7 +85,7 @@ export const products = [
   {
     name: "Chef's Knife",
     description: "8-inch high-carbon stainless steel chef's knife.",
-    price: 54.99,
+    price: 33000,
     images: ["https://picsum.photos/seed/knife/600/600"],
     category: "kitchen",
     stock: 17,
@@ -93,7 +93,7 @@ export const products = [
   {
     name: "Bamboo Cutting Board",
     description: "Reversible bamboo board with a juice groove.",
-    price: 21.5,
+    price: 13000,
     images: ["https://picsum.photos/seed/cuttingboard/600/600"],
     category: "kitchen",
     stock: 50,
@@ -101,7 +101,7 @@ export const products = [
   {
     name: "Personal Blender",
     description: "Compact blender for smoothies, 2 travel cups included.",
-    price: 42.0,
+    price: 25000,
     images: ["https://picsum.photos/seed/blender/600/600"],
     category: "kitchen",
     stock: 12,
@@ -109,7 +109,7 @@ export const products = [
   {
     name: "French Press",
     description: "34oz borosilicate glass French press.",
-    price: 28.99,
+    price: 17500,
     images: ["https://picsum.photos/seed/frenchpress/600/600"],
     category: "kitchen",
     stock: 30,
@@ -119,7 +119,7 @@ export const products = [
   {
     name: "Wireless Headphones",
     description: "Over-ear headphones with noise cancellation.",
-    price: 89.99,
+    price: 54000,
     images: ["https://picsum.photos/seed/headphones/600/600"],
     category: "electronics",
     stock: 30,
@@ -127,7 +127,7 @@ export const products = [
   {
     name: "Mechanical Keyboard",
     description: "Compact 65% mechanical keyboard with hot-swappable switches.",
-    price: 74.99,
+    price: 45000,
     images: ["https://picsum.photos/seed/keyboard/600/600"],
     category: "electronics",
     stock: 15,
@@ -135,7 +135,7 @@ export const products = [
   {
     name: "Wireless Mouse",
     description: "Ergonomic wireless mouse with silent clicks.",
-    price: 25.99,
+    price: 15500,
     images: ["https://picsum.photos/seed/mouse/600/600"],
     category: "electronics",
     stock: 55,
@@ -143,7 +143,7 @@ export const products = [
   {
     name: "Portable Charger",
     description: "10,000mAh USB-C power bank.",
-    price: 29.99,
+    price: 18000,
     images: ["https://picsum.photos/seed/powerbank/600/600"],
     category: "electronics",
     stock: 40,
@@ -151,7 +151,7 @@ export const products = [
   {
     name: "Bluetooth Speaker",
     description: "Waterproof portable speaker with 12h battery life.",
-    price: 49.99,
+    price: 30000,
     images: ["https://picsum.photos/seed/speaker/600/600"],
     category: "electronics",
     stock: 26,
@@ -159,7 +159,7 @@ export const products = [
   {
     name: "HD Webcam",
     description: "1080p webcam with a built-in privacy shutter.",
-    price: 34.5,
+    price: 20500,
     images: ["https://picsum.photos/seed/webcam/600/600"],
     category: "electronics",
     stock: 20,
@@ -167,7 +167,7 @@ export const products = [
   {
     name: "Smart Watch",
     description: "Fitness tracking, heart rate monitor, 7-day battery.",
-    price: 119.0,
+    price: 71500,
     images: ["https://picsum.photos/seed/smartwatch/600/600"],
     category: "electronics",
     stock: 10,
@@ -177,7 +177,7 @@ export const products = [
   {
     name: "Notebook Set",
     description: "Pack of 3 dotted notebooks, 120 pages each.",
-    price: 14.99,
+    price: 9000,
     images: ["https://picsum.photos/seed/notebook/600/600"],
     category: "stationery",
     stock: 60,
@@ -185,7 +185,7 @@ export const products = [
   {
     name: "Fountain Pen",
     description: "Smooth-writing fountain pen with a converter.",
-    price: 22.0,
+    price: 13000,
     images: ["https://picsum.photos/seed/pen/600/600"],
     category: "stationery",
     stock: 33,
@@ -193,7 +193,7 @@ export const products = [
   {
     name: "Sticky Notes Pack",
     description: "12-pad set of sticky notes in assorted colors.",
-    price: 8.5,
+    price: 5000,
     images: ["https://picsum.photos/seed/stickynotes/600/600"],
     category: "stationery",
     stock: 90,
@@ -201,7 +201,7 @@ export const products = [
   {
     name: "Desk Organizer",
     description: "Mesh desk organizer with 5 compartments.",
-    price: 19.99,
+    price: 12000,
     images: ["https://picsum.photos/seed/organizer/600/600"],
     category: "stationery",
     stock: 28,
@@ -209,7 +209,7 @@ export const products = [
   {
     name: "Highlighter Set",
     description: "6 pastel highlighters, chisel tip.",
-    price: 7.99,
+    price: 5000,
     images: ["https://picsum.photos/seed/highlighters/600/600"],
     category: "stationery",
     stock: 70,
@@ -219,7 +219,7 @@ export const products = [
   {
     name: "Desk Lamp",
     description: "Adjustable LED desk lamp with 3 brightness levels.",
-    price: 34.99,
+    price: 21000,
     images: ["https://picsum.photos/seed/lamp/600/600"],
     category: "home",
     stock: 25,
@@ -227,7 +227,7 @@ export const products = [
   {
     name: "Throw Blanket",
     description: "Soft knit throw blanket, 50x60 inches.",
-    price: 29.99,
+    price: 18000,
     images: ["https://picsum.photos/seed/blanket/600/600"],
     category: "home",
     stock: 38,
@@ -235,7 +235,7 @@ export const products = [
   {
     name: "Scented Candle",
     description: "Soy wax candle, 45-hour burn time.",
-    price: 16.5,
+    price: 10000,
     images: ["https://picsum.photos/seed/candle/600/600"],
     category: "home",
     stock: 65,
@@ -243,7 +243,7 @@ export const products = [
   {
     name: "Minimalist Wall Clock",
     description: "Silent quartz wall clock, 12-inch face.",
-    price: 23.99,
+    price: 14500,
     images: ["https://picsum.photos/seed/clock/600/600"],
     category: "home",
     stock: 24,
@@ -251,7 +251,7 @@ export const products = [
   {
     name: "Ceramic Plant Pot",
     description: "6-inch pot with drainage hole and saucer.",
-    price: 13.99,
+    price: 8500,
     images: ["https://picsum.photos/seed/plantpot/600/600"],
     category: "home",
     stock: 42,
@@ -259,7 +259,7 @@ export const products = [
   {
     name: "Area Rug",
     description: "5x7 ft woven area rug, machine washable.",
-    price: 79.0,
+    price: 47500,
     images: ["https://picsum.photos/seed/rug/600/600"],
     category: "home",
     stock: 9,

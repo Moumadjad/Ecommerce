@@ -17,6 +17,10 @@ export const protect = async function protect(req, res, next) {
       return res.status(401).json({ message: "Not authorized, user not found" });
     }
 
+    if (!user.isActive) {
+      return res.status(401).json({ message: "Your account has been deactivated" });
+    }
+
     req.user = user;
     next();
   } catch {
@@ -35,7 +39,7 @@ export const optionalAuth = async function optionalAuth(req, res, next) {
     const token = header.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);
-    if (user) req.user = user;
+    if (user?.isActive) req.user = user;
   } catch {
     // Invalid or expired token on a public route: proceed unauthenticated.
   }

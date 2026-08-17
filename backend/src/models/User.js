@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema(
     },
     password: { type: String, required: true, minlength: 6, select: false },
     role: { type: String, enum: ["customer", "admin"], default: "customer" },
+    isActive: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

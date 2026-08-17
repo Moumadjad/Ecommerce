@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api/client";
 import OrderStatusBadge from "../components/OrderStatusBadge";
+import { formatCurrency } from "../lib/currency";
 import { btn, card, link } from "../lib/ui";
 
 export default function OrderDetail() {
@@ -52,7 +53,7 @@ export default function OrderDetail() {
     <div className="max-w-xl">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          Order #{order._id.slice(-6)}
+          Order {order.orderNumber}
         </h1>
         <OrderStatusBadge status={order.status} />
       </div>
@@ -64,14 +65,14 @@ export default function OrderDetail() {
               {item.name} x {item.quantity}
             </span>
             <span className="text-gray-900 dark:text-gray-100">
-              ${(item.price * item.quantity).toFixed(2)}
+              {formatCurrency(item.price * item.quantity)}
             </span>
           </div>
         ))}
       </div>
 
       <p className="mt-4 font-semibold text-gray-900 dark:text-white">
-        Total: ${order.totalPrice.toFixed(2)}
+        Total: {formatCurrency(order.totalPrice)}
       </p>
 
       {order.shippingAddress?.address && (
@@ -100,7 +101,7 @@ export default function OrderDetail() {
       {order.status === "pending" && confirming && (
         <div className={card("mt-6 p-4")}>
           <p className="text-gray-900 dark:text-gray-100">
-            Confirm payment of <span className="font-semibold">${order.totalPrice.toFixed(2)}</span>?
+            Confirm payment of <span className="font-semibold">{formatCurrency(order.totalPrice)}</span>?
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             Simulated payment — no card details required, this always succeeds.

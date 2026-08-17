@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import { useCart } from "../context/CartContext";
+import { formatCurrency } from "../lib/currency";
 import { btn, card, input, label as labelClass, link } from "../lib/ui";
 
 export default function Checkout() {
@@ -87,13 +88,13 @@ export default function Checkout() {
                 {item.name} x {item.quantity}
               </span>
               <span className="text-gray-900 dark:text-gray-100">
-                ${(item.price * item.quantity).toFixed(2)}
+                {formatCurrency(item.price * item.quantity)}
               </span>
             </div>
           ))}
         </div>
         <p className="mt-3 font-semibold text-gray-900 dark:text-white">
-          Total: ${totalPrice.toFixed(2)}
+          Total: {formatCurrency(totalPrice)}
         </p>
       </div>
     </div>

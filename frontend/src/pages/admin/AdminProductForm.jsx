@@ -130,13 +130,13 @@ export default function AdminProductForm() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className={labelClass()}>Price ($)</label>
+            <label className={labelClass()}>Price (FCFA)</label>
             <input
               type="number"
               name="price"
               required
               min="0"
-              step="0.01"
+              step="1"
               value={form.price}
               onChange={handleChange}
               className={input("mt-1")}

@@ -5,9 +5,11 @@ import Layout from "./components/Layout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import AdminCategories from "./pages/admin/AdminCategories";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminOrderDetail from "./pages/admin/AdminOrderDetail";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminProductForm from "./pages/admin/AdminProductForm";
 import AdminProducts from "./pages/admin/AdminProducts";
+import AdminUsers from "./pages/admin/AdminUsers";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Favorites from "./pages/Favorites";
@@ -68,6 +70,8 @@ function App() {
         <Route path="products/:id/edit" element={<AdminProductForm />} />
         <Route path="categories" element={<AdminCategories />} />
         <Route path="orders" element={<AdminOrders />} />
+        <Route path="orders/:id" element={<AdminOrderDetail />} />
+        <Route path="users" element={<AdminUsers />} />
       </Route>
     </Routes>
   );

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
+import { formatCurrency } from "../lib/currency";
 import { card } from "../lib/ui";
 
 export default function ProductCard({ product }) {
@@ -59,7 +60,7 @@ export default function ProductCard({ product }) {
         <h3 className="mt-1 font-medium text-gray-900 dark:text-gray-100">{product.name}</h3>
         <div className="mt-2 flex items-center justify-between gap-2">
           <p className="font-semibold text-gray-900 dark:text-gray-100">
-            ${product.price.toFixed(2)}
+            {formatCurrency(product.price)}
           </p>
           {product.stock === 0 ? (
             <span className="text-xs font-medium text-red-600 dark:text-red-400">Out of stock</span>

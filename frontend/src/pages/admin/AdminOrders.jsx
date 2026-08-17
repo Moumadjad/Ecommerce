@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../../api/client";
 import OrderStatusBadge from "../../components/OrderStatusBadge";
-import { EyeIcon, SearchIcon } from "../../components/icons";
+import { EyeIcon, SearchIcon, XCircleIcon } from "../../components/icons";
+import { formatCurrency } from "../../lib/currency";
 import { btn, card, input } from "../../lib/ui";
 
 const STATUSES = ["pending", "paid", "shipped", "delivered", "cancelled"];
 const PAGE_SIZES = [10, 20, 50, 100];
 
 export default function AdminOrders() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const userFilter = searchParams.get("user") || "";
+  const customerName = searchParams.get("customerName") || "";
+
   const [orders, setOrders] = useState(null);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
@@ -32,7 +37,9 @@ export default function AdminOrders() {
 
   function load() {
     api
-      .get("/orders", { params: { page, limit, search: search || undefined } })
+      .get("/orders", {
+        params: { page, limit, search: search || undefined, user: userFilter || undefined },
+      })
       .then(({ data }) => {
         setOrders(data.orders);
         setPages(data.pages);
@@ -40,7 +47,11 @@ export default function AdminOrders() {
       .catch(() => setError("Failed to load orders"));
   }
 
-  useEffect(load, [page, limit, search]);
+  useEffect(load, [page, limit, search, userFilter]);
+
+  function clearUserFilter() {
+    setSearchParams({});
+  }
 
   async function handleStatusChange(order, status) {
     setUpdatingId(order._id);
@@ -59,6 +70,23 @@ export default function AdminOrders() {
       <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white mb-6">
         Orders
       </h1>
+
+      {userFilter && (
+        <div className="flex items-center gap-2 mb-4 text-sm">
+          <span className="text-gray-500 dark:text-gray-400">
+            Filtered by customer{customerName ? `: ${customerName}` : ""}
+          </span>
+          <button
+            type="button"
+            onClick={clearUserFilter}
+            aria-label="Clear customer filter"
+            className="inline-flex items-center gap-1 text-amber-700 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300 transition-colors"
+          >
+            <XCircleIcon className="h-4 w-4" />
+            Clear
+          </button>
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-3 mb-4">
         <div className="relative flex-1 min-w-[200px]">
@@ -96,7 +124,8 @@ export default function AdminOrders() {
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-800">
-                <th className="py-3 pl-5 pr-4 font-medium">Customer</th>
+                <th className="py-3 pl-5 pr-4 font-medium">Order #</th>
+                <th className="py-3 pr-4 font-medium">Customer</th>
                 <th className="py-3 pr-4 font-medium">Date</th>
                 <th className="py-3 pr-4 font-medium">Total</th>
                 <th className="py-3 pr-4 font-medium">Status</th>
@@ -106,7 +135,10 @@ export default function AdminOrders() {
             <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
               {orders.map((order) => (
                 <tr key={order._id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                  <td className="py-3 pl-5 pr-4 text-gray-900 dark:text-gray-100">
+                  <td className="py-3 pl-5 pr-4 text-gray-900 dark:text-gray-100 whitespace-nowrap">
+                    {order.orderNumber}
+                  </td>
+                  <td className="py-3 pr-4 text-gray-900 dark:text-gray-100">
                     {order.user?.name}
                     <br />
                     <span className="text-gray-500 dark:text-gray-400 text-xs">{order.user?.email}</span>
@@ -115,7 +147,7 @@ export default function AdminOrders() {
                     {new Date(order.createdAt).toLocaleDateString()}
                   </td>
                   <td className="py-3 pr-4 text-gray-600 dark:text-gray-300">
-                    ${order.totalPrice.toFixed(2)}
+                    {formatCurrency(order.totalPrice)}
                   </td>
                   <td className="py-3 pr-4">
                     <div className="flex items-center gap-2">
@@ -136,7 +168,7 @@ export default function AdminOrders() {
                   </td>
                   <td className="py-3 pr-5 text-right">
                     <Link
-                      to={`/orders/${order._id}`}
+                      to={`/admin/orders/${order._id}`}
                       aria-label="View order"
                       title="View order"
                       className="inline-flex text-amber-700 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300 transition-colors"
