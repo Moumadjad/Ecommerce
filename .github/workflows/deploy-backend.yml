@@ -1,0 +1,42 @@
+name: Deploy Backend to Azure App Service
+
+# Prerequisites (do this once in the Azure Portal + GitHub repo settings):
+#   1. Create an Azure App Service (Linux, Node 20 LTS) for the backend.
+#   2. In the App Service > Configuration > Application settings, add:
+#        MONGO_URI, JWT_SECRET, CLIENT_URL (your deployed frontend URL), PORT is provided by Azure automatically.
+#   3. Download the App Service's publish profile (Overview > "Download publish profile")
+#      and save it as a GitHub secret named AZURE_BACKEND_PUBLISH_PROFILE.
+#   4. Replace AZURE_WEBAPP_NAME below with your real App Service name.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/deploy-backend.yml"
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: my-eshop-api
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: backend
+        run: npm ci --omit=dev
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_BACKEND_PUBLISH_PROFILE }}
+          package: backend

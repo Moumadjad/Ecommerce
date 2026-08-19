@@ -1,0 +1,50 @@
+name: Deploy Frontend to Azure App Service
+
+# Prerequisites (do this once in the Azure Portal + GitHub repo settings):
+#   1. Create a second Azure App Service (Linux, Node 20 LTS) for the frontend.
+#   2. Download its publish profile and save it as a GitHub secret named
+#      AZURE_FRONTEND_PUBLISH_PROFILE.
+#   3. Add a GitHub secret VITE_API_URL pointing at your deployed backend,
+#      e.g. https://your-backend-app-name.azurewebsites.net/api
+#      (Vite inlines env vars at BUILD time, so this must be set here,
+#      not as an Azure App Service runtime setting.)
+#   4. Replace AZURE_WEBAPP_NAME below with your real App Service name.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/deploy-frontend.yml"
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: my-eshop-web
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build
+        working-directory: frontend
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_FRONTEND_PUBLISH_PROFILE }}
+          package: frontend

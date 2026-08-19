@@ -49,3 +49,45 @@ cd frontend
 cp .env.example .env   # points VITE_API_URL at the backend (defaults to http://localhost:5000/api)
 npm run dev
 ```
+
+## Deployment (MongoDB Atlas + Azure App Service)
+
+The app deploys as two separate Azure App Services (backend API + frontend static site), backed by MongoDB Atlas. CI/CD is handled by `.github/workflows/deploy-backend.yml` and `.github/workflows/deploy-frontend.yml` — pushing to `main` auto-deploys whichever side changed.
+
+### 1. MongoDB Atlas
+
+1. Create a free cluster at [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas).
+2. Create a database user and, under Network Access, allow access from anywhere (`0.0.0.0/0`) — or restrict to Azure's outbound IPs once known.
+3. Grab the connection string (`mongodb+srv://...`); you'll use it as `MONGO_URI` below.
+
+### 2. Azure — create two App Services
+
+In the [Azure Portal](https://portal.azure.com/), create one resource group, then two **Linux, Node 20 LTS** App Services in it:
+
+- One for the backend (e.g. `my-eshop-api`)
+- One for the frontend (e.g. `my-eshop-web`)
+
+For each, under **Configuration → Application settings**, add:
+
+**Backend App Service:**
+| Setting | Value |
+|---|---|
+| `MONGO_URI` | your Atlas connection string |
+| `JWT_SECRET` | a long random string |
+| `CLIENT_URL` | `https://<your-frontend-app-name>.azurewebsites.net` |
+
+**Frontend App Service:** no runtime settings needed — `VITE_API_URL` is baked in at build time (see step 3).
+
+### 3. GitHub Actions secrets
+
+In the GitHub repo → Settings → Secrets and variables → Actions, add:
+
+- `AZURE_BACKEND_PUBLISH_PROFILE` — from the backend App Service's Overview page → "Download publish profile", paste the full XML content.
+- `AZURE_FRONTEND_PUBLISH_PROFILE` — same, from the frontend App Service.
+- `VITE_API_URL` — `https://<your-backend-app-name>.azurewebsites.net/api`
+
+Then edit `AZURE_WEBAPP_NAME` at the top of each workflow file in `.github/workflows/` to match your actual App Service names.
+
+### 4. Deploy
+
+Push to `main`. Each workflow only runs when its own folder (`backend/` or `frontend/`) changes, so the two sides deploy independently. You can also trigger either manually from the GitHub Actions tab (`workflow_dispatch`).
