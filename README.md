@@ -2,6 +2,10 @@
 
 MongoDB / Express / React / Node e-commerce site.
 
+**Live:**
+- Frontend: https://my-eshop-web-gag8augdere6ffb7.spaincentral-01.azurewebsites.net
+- Backend API: https://my-eshop-api-aje7a6dyhhggb4fz.spaincentral-01.azurewebsites.net/api
+
 ## Structure
 
 - `backend/` — Express + Mongoose API, connects to MongoDB Atlas via `MONGO_URI` in `.env` (see `backend/.env.example`).
