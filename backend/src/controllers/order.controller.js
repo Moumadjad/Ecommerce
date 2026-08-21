@@ -1,27 +1,25 @@
 import { Order } from "../models/Order.js";
 import { Product } from "../models/Product.js";
 import { User } from "../models/User.js";
+import { Cart } from "../models/Cart.js";
 import { getNextSequence } from "../models/Counter.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const createOrder = asyncHandler(async function createOrder(req, res) {
-  const { items, shippingAddress } = req.body;
+  const { shippingAddress } = req.body;
 
-  if (!Array.isArray(items) || items.length === 0) {
-    return res.status(400).json({ message: "Order must contain at least one item" });
+  const cart = await Cart.findOne({ user: req.user._id });
+  if (!cart || cart.items.length === 0) {
+    return res.status(400).json({ message: "Your cart is empty" });
   }
 
   const orderItems = [];
   let totalPrice = 0;
 
-  for (const { product: productId, quantity } of items) {
-    if (!quantity || quantity < 1) {
-      return res.status(400).json({ message: "Each item needs a quantity of at least 1" });
-    }
-
+  for (const { product: productId, quantity } of cart.items) {
     const product = await Product.findById(productId);
-    if (!product) {
-      return res.status(400).json({ message: `Product not found: ${productId}` });
+    if (!product || !product.isActive) {
+      return res.status(400).json({ message: `Product no longer available: ${productId}` });
     }
     if (product.stock < quantity) {
       return res.status(400).json({ message: `Insufficient stock for ${product.name}` });
@@ -51,6 +49,9 @@ export const createOrder = asyncHandler(async function createOrder(req, res) {
     shippingAddress,
     totalPrice,
   });
+
+  cart.items = [];
+  await cart.save();
 
   res.status(201).json({ order });
 });

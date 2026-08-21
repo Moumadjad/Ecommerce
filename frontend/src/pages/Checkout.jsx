@@ -21,10 +21,7 @@ export default function Checkout() {
     setError("");
     setSubmitting(true);
     try {
-      const { data } = await api.post("/orders", {
-        items: items.map((item) => ({ product: item.productId, quantity: item.quantity })),
-        shippingAddress: address,
-      });
+      const { data } = await api.post("/orders", { shippingAddress: address });
       clearCart();
       navigate(`/orders/${data.order._id}`);
     } catch (err) {
